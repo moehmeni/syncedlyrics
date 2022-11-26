@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "syncedlyrics"
+version = "0.1.0"
+description = "Get an LRC format (synchronized) lyrics for your music"
+authors = ["Momo <lo3me@proton.me>"]
+license = "MIT"
+readme = "README.md"
+classifiers = [
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Sound/Audio :: Players",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+requests = "^2.28.1"
+rapidfuzz = "^2.13.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
