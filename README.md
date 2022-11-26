@@ -13,7 +13,7 @@ python -m syncedlyrics "SEARCH_TERM"
 #### Available Options
 | Flag | Description |
 | --- | --- |
-| `-o` | Path to save '.lrc' lyrics", default="{search_term}.lrc |
+| `-o` | Path to save `.lrc` lyrics, default="{search_term}.lrc" |
 | `-v` | Use this flag to show the logs |
 | `--allow-plain` | Return a plain text (not synced) lyrics if not LRC was found |
 
