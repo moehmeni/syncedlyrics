@@ -24,7 +24,7 @@ lrc = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
 ```
 Or with options:
 ```py
-syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_1234.lrc")
+syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_1234.lrc", providers=["Deezer"])
 ```
 
 ## Providers
