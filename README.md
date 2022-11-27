@@ -36,4 +36,4 @@ Feel free to suggest more providers please.
 [MIT](https://github.com/rtcq/syncedlyrics/blob/master/LICENSE)
 
 ## Notes
-I also found a [repo](https://github.com/fashni/MxLRC) for MusixMatch API, but it has annoying API rate limits at the moment
+I also found a [repo](https://github.com/fashni/MxLRC) for Musixmatch API, but it has annoying API rate limits at the moment
