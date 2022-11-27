@@ -8,7 +8,7 @@ pip install syncedlyrics
 ## Usage
 ### CLI
 ```
-python -m syncedlyrics "SEARCH_TERM"
+syncedlyrics "SEARCH_TERM"
 ```
 #### Available Options
 | Flag | Description |
