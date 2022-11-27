@@ -16,6 +16,8 @@ python = "^3.6"
 requests = "^2.28.1"
 rapidfuzz = "^2.13.2"
 
+[tool.poetry.scripts]
+syncedlyrics = "syncedlyrics"
 
 [build-system]
 requires = ["poetry-core"]
