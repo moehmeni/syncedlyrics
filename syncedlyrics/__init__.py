@@ -14,19 +14,27 @@ from .utils import is_lrc_valid, save_lrc_file
 
 
 def search(
-    search_term: str, allow_plain_format: bool = False, save_path: str = None
+    search_term: str,
+    allow_plain_format: bool = False,
+    save_path: str = None,
+    providers: list[str] = None,
 ) -> Optional[str]:
     """
     Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
     ### Arguments
-    - `search_term` str: The search term to find the track.
-    - `allow_normal_format` bool: Return a plain text (not synced) lyrics if not LRC was found.
-    - `save_path` str: Path to save `.lrc` lyrics. No saving if `None`.
+    - `search_term`: The search term to find the track.
+    - `allow_normal_format`: Return a plain text (not synced) lyrics if not LRC was found.
+    - `save_path`: Path to save `.lrc` lyrics. No saving if `None`.
+    - `providers`: A list of provider names to include in searching.
     """
-    for provider in [
+    _providers = [
         Deezer(),
         NetEase(),
-    ]:
+    ]
+    if providers:
+        # Filtering the providers
+        _providers = [p for p in _providers if p.__class__.__name__ in providers]
+    for provider in _providers:
         lrc = provider.get_lrc(search_term)
         if is_lrc_valid(lrc, allow_plain_format):
             break
