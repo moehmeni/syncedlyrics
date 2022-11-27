@@ -29,6 +29,7 @@ syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_123
 
 ## Providers
 - NetEase (music.163.com)
+- Deezer
 
 Feel free to suggest more providers please.
 
