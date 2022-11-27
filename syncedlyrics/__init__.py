@@ -32,6 +32,7 @@ def search(
             break
     if not lrc:
         logging.info(f'No synced-lyrics found for "{search_term}" :(')
+        return
     if save_path:
         save_path = save_path.format(search_term=search_term)
         save_lrc_file(save_path, lrc)
