@@ -1,4 +1,4 @@
-"""Spotify API that is powered by Musixmatch"""
+"""Spotify provider (the API is powered by Musixmatch)"""
 
 from typing import Optional
 from .base import LRCProvider
