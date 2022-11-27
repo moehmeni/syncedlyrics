@@ -9,7 +9,7 @@ lrc_text = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
 
 from typing import Optional
 import logging
-from .providers import NetEase
+from .providers import NetEase, Deezer
 from .utils import is_lrc_valid, save_lrc_file
 
 
@@ -24,6 +24,7 @@ def search(
     - `save_path` str: Path to save `.lrc` lyrics. No saving if `None`.
     """
     for provider in [
+        Deezer(),
         NetEase(),
     ]:
         lrc = provider.get_lrc(search_term)
