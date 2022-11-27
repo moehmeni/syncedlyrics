@@ -41,8 +41,8 @@ class NetEase(LRCProvider):
         track = results[0]
         track_name = f"{track.get('name')} {track.get('artists')[0].get('name')}"
         if partial_ratio(search_term, track_name) < 70:
-            logging.error(
-                f"Found something but it seems the result is not the requested track. -> {track_name}"
+            logging.info(
+                f"Found something but it seems the result is not the requested track -> {track_name}"
             )
             return
         # Update the session cookies from the new sent cookies for the next request.
