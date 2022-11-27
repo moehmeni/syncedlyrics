@@ -5,6 +5,7 @@ def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
     """Checks whether a given LRC string is valid or not."""
     if not lrc:
         return False
+    if not allow_plain_format:
     if not ("[" in lrc and "]" in lrc):
         return False
 
