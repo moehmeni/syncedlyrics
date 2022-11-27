@@ -27,14 +27,20 @@ class Deezer(LRCProvider):
         response = self.session.post(self.API_ENDPOINT, params=params, json=json)
         return response.json()
 
+    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+        lrc_response = self._api_call("song.getLyrics", json={"sng_id": track_id})
+        lrc_json_objs = lrc_response["results"].get("LYRICS_SYNC_JSON")
+        if not lrc_json_objs:
+            # Returning the plain text lyrics
+            return lrc_response["results"].get("LYRICS_TEXT")
+        for chunk in lrc_json_objs:
+            if chunk.get("lrc_timestamp") and chunk.get("line"):
+                lrc += f"{chunk['lrc_timestamp']} {chunk['line']}\n"
+        return lrc
+
     def get_lrc(self, search_term: str) -> Optional[str]:
-        lrc = ""
         search_results = self.session.get(self.SEARCH_ENDPOINT + search_term).json()
         if not search_results.get("data"):
             return
         song = search_results.get("data")[0]
-        lrc_response = self._api_call("song.getLyrics", json={"sng_id": song["id"]})
-        for chunk in lrc_response["results"]["LYRICS_SYNC_JSON"]:
-            if chunk.get("lrc_timestamp") and chunk.get("line"):
-                lrc += f"{chunk['lrc_timestamp']} {chunk['line']}\n"
-        return lrc
+        return self.get_lrc_by_id(song["id"])

@@ -14,8 +14,12 @@ class Spotify(LRCProvider):
     def get_track_id(search_term: str) -> Optional[str]:
         """Returns a Spotify track ID for given `search_term`"""
         # TODO: self.client.search(search_term) and processing the results
-        pass
+        raise NotImplementedError
+
+    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+        # TODO:
+        raise NotImplementedError
 
     def get_lrc(self, search_term: str) -> Optional[str]:
         # TODO: Use https://github.com/akashrchandran/spotify-lyrics-api
-        return super().get_lrc()
+        raise NotImplementedError

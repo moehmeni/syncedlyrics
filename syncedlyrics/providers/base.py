@@ -12,7 +12,16 @@ class LRCProvider:
     def __init__(self) -> None:
         pass
 
-    def get_lrc(search_term: str) -> Optional[str]:
+    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+        """
+        Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
+
+        ### Arguments
+        - track_id: The ID of the track defined in the provider database. e.g. Spotify/Deezer track ID
+        """
+        raise NotImplementedError
+
+    def get_lrc(self, search_term: str) -> Optional[str]:
         """
         Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
         """

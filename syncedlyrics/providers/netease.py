@@ -24,17 +24,17 @@ headers = {
 class NetEase(LRCProvider):
     """NetEase provider class"""
 
-    url_data = "https://music.163.com/api/search/pc"
-    url_lyrics = "https://music.163.com/api/song/lyric"
+    API_ENDPOINT_METADATA = "https://music.163.com/api/search/pc"
+    API_ENDPOINT_LYRICS = "https://music.163.com/api/song/lyric"
 
     def __init__(self) -> None:
         super().__init__()
         self.session.headers.update(headers)
 
-    def get_track_metadata(self, search_term: str) -> Optional[dict]:
+    def search_track(self, search_term: str) -> Optional[dict]:
         """Returns a `dict` containing some metadata for the found track."""
         params = {"limit": 10, "type": 1, "offset": 0, "s": search_term}
-        response = self.session.get(self.url_data, params=params)
+        response = self.session.get(self.API_ENDPOINT_METADATA, params=params)
         results = response.json().get("result", {}).get("songs")
         if not results:
             return
@@ -50,16 +50,19 @@ class NetEase(LRCProvider):
         self.session.headers.update({"referer": response.url})
         return track
 
+    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+        params = {"id": track_id, "lv": 1}
+        response = self.session.get(self.API_ENDPOINT_LYRICS, params=params)
+        lrc = response.json().get("lrc", {}).get("lyric")
+        if not lrc:
+            return
+        return lrc
+
     def get_lrc(self, search_term: str) -> Optional[str]:
         """Returns the LRC format lyrics, if available on NetEase"""
-        track = self.get_track_metadata(search_term)
+        track = self.search_track(search_term)
         if not track:
             return
         track_name = f"{track.get('artists')[0].get('name')} - {track.get('name')}"
         logging.info(f"Getting synced lyrics of {track_name}...")
-        params = {"id": track.get("id"), "lv": 1}
-        response = self.session.get(self.url_lyrics, params=params)
-        lyrics = response.json().get("lrc", {}).get("lyric")
-        if not lyrics:
-            return
-        return lyrics
+        return self.get_lrc_by_id(track["id"])
