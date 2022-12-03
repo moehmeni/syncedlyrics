@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "syncedlyrics"
-version = "0.2.0"
+version = "0.2.1"
 description = "Get an LRC format (synchronized) lyrics for your music"
 authors = ["Momo <lo3me@proton.me>"]
 license = "MIT"
