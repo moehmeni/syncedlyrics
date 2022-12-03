@@ -25,7 +25,7 @@ def search(
     - `search_term`: The search term to find the track.
     - `allow_normal_format`: Return a plain text (not synced) lyrics if not LRC was found.
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`.
-    - `providers`: A list of provider names to include in searching.
+    - `providers`: A list of provider names to include in searching. Uses `Deezer` and `NetEase` by default.
     """
     _providers = [
         Deezer(),
