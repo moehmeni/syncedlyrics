@@ -7,7 +7,7 @@ lrc_text = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
 ```
 """
 
-from typing import Optional
+from typing import Optional, List
 import logging
 from .providers import NetEase, Deezer
 from .utils import is_lrc_valid, save_lrc_file
@@ -17,7 +17,7 @@ def search(
     search_term: str,
     allow_plain_format: bool = False,
     save_path: str = None,
-    providers: list[str] = None,
+    providers: List[str] = None,
 ) -> Optional[str]:
     """
     Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
