@@ -1,5 +1,7 @@
 # syncedlyrics
  Get an LRC format (synchronized) lyrics for your music.
+ 
+ [![Downloads](https://static.pepy.tech/badge/syncedlyrics/month)](https://pepy.tech/project/syncedlyrics)
 
 ## Installation
 ```
