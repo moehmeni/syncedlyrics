@@ -33,10 +33,11 @@ class Deezer(LRCProvider):
         if not lrc_json_objs:
             # Returning the plain text lyrics
             return lrc_response["results"].get("LYRICS_TEXT")
+        lrc = ""
         for chunk in lrc_json_objs:
             if chunk.get("lrc_timestamp") and chunk.get("line"):
                 lrc += f"{chunk['lrc_timestamp']} {chunk['line']}\n"
-        return lrc
+        return lrc or None
 
     def get_lrc(self, search_term: str) -> Optional[str]:
         search_results = self.session.get(self.SEARCH_ENDPOINT + search_term).json()
