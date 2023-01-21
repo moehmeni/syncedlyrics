@@ -15,6 +15,10 @@ classifiers = [
 python = "^3.7"
 requests = "^2.28.1"
 rapidfuzz = "^2.13.2"
+beautifulsoup4 = "^4.11.1"
+
+[tool.poetry.dev-dependencies]
+black = "*"
 
 [tool.poetry.scripts]
 syncedlyrics = "syncedlyrics.cli:cli_handler"
