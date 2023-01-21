@@ -26,15 +26,20 @@ def search(
     - `allow_normal_format`: Return a plain text (not synced) lyrics if not LRC was found.
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`.
     - `providers`: A list of provider names to include in searching.
+    `Deezer`, `Lyricsify` and `NetEase` are currently supported.
     Loops over all the providers as soon as an LRC is found.
     """
     _providers = [Deezer(), Lyricsify(), NetEase()]
     if providers:
         # Filtering the providers
         _providers = [p for p in _providers if p.__class__.__name__ in providers]
+    lrc = None
     for provider in _providers:
         lrc = provider.get_lrc(search_term)
         if is_lrc_valid(lrc, allow_plain_format):
+            logging.info(
+                f'synced-lyrics found for "{search_term}" on {provider.__class__.__name__}'
+            )
             break
     if not lrc:
         logging.info(f'No synced-lyrics found for "{search_term}" :(')
