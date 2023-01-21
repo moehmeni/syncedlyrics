@@ -59,7 +59,6 @@ class NetEase(LRCProvider):
         return lrc
 
     def get_lrc(self, search_term: str) -> Optional[str]:
-        """Returns the LRC format lyrics, if available on NetEase"""
         track = self.search_track(search_term)
         if not track:
             return
