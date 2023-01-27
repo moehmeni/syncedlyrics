@@ -24,8 +24,11 @@ def cli_handler():
         "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     args = parser.parse_args()
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
+
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO
+    )
+
     lrc = search(args.search_term, args.allow_plain, args.output)
     if lrc:
         print(lrc)

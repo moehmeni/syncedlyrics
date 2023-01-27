@@ -23,6 +23,9 @@ black = "*"
 [tool.poetry.scripts]
 syncedlyrics = "syncedlyrics.cli:cli_handler"
 
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
