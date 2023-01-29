@@ -32,6 +32,7 @@ syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_123
 ## Providers
 - [NetEase](https://music.163.com/)
 - [Lyricsify](https://www.lyricsify.com/)
+- [Megalobiz](https://www.megalobiz.com/)
 - ~~[Deezer](https://deezer.com/)~~ (Currently broken, PR is appreciated)
 
 Feel free to suggest more providers please.
