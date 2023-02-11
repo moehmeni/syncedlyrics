@@ -26,7 +26,6 @@ class Megalobiz(LRCProvider):
         # TODO: We can also sort a tags based on a string similarity as done for
         # Lyricsify provider before, but for now this seem to be enough
         a_tag = soup.find("a")
-        print(a_tag)
         if not a_tag:
             return None
         # Scraping from the LRC page
