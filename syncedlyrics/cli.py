@@ -25,9 +25,7 @@ def cli_handler():
     )
     args = parser.parse_args()
 
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO
-    )
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
     lrc = search(args.search_term, args.allow_plain, args.output)
     if lrc:
