@@ -8,6 +8,7 @@ from .base import LRCProvider
 
 # Mostly based on https://gist.github.com/akashrchandran/95915c2081815397c454bd8aa4a118b5
 
+
 class Deezer(LRCProvider):
     """Deezer provider class"""
 
