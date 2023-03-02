@@ -2,7 +2,7 @@ name: Tests
 
 on:
   schedule:
-    - cron: "7 12 * * *" # Every day, 12:07 UTC
+    - cron: "26 5 * * *" # Every day, 05:26 UTC
   push:
     branches:
       - main
