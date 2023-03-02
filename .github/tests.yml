@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+  schedule:
+    - cron: "7 12 * * *" # Every day, 12:07 UTC
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  daily-test:
+    runs-on: [ubunto-latest, windows-latest, macos-latest]
+    steps:
+      - name: Installing poetry
+        run: pipx install poetry
+
+      - name: Inatalling dependencies
+        run: poetry install
+
+      - name: Formatting the code with black
+        run: black syncedlyrics
+
+      - name: Running provider tests
+        run: python -m unittest -v
