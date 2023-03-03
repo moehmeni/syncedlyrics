@@ -14,19 +14,23 @@ jobs:
   daily-test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.7', '3.11']
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
 
       - name: Installing poetry
         run: pipx install poetry
 
       - name: Inatalling dependencies
-        run: poetry install
-
-      - name: Formatting the code with black
-        run: poetry run black syncedlyrics
+        run: | 
+          poetry env use ${{ matrix.python-version }}
+          poetry install
 
       - name: Running provider tests
         run: poetry run python -m unittest -v
