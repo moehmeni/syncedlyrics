@@ -12,10 +12,13 @@ on:
 
 jobs:
   daily-test:
-    runs-on: [ubunto-latest, windows-latest, macos-latest]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Installing poetry
         run: pipx install poetry
 
