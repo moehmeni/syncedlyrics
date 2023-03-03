@@ -26,7 +26,7 @@ jobs:
         run: poetry install
 
       - name: Formatting the code with black
-        run: black syncedlyrics
+        run: poetry run black syncedlyrics
 
       - name: Running provider tests
-        run: python -m unittest -v
+        run: poetry run python -m unittest -v
