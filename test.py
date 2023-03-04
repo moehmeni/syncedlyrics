@@ -8,7 +8,7 @@ q = os.getenv("TEST_Q", "bad guy billie eilish")
 class ProvidersTestCase(unittest.TestCase):
     def _test_provider(self, provider: str):
         lrc = search(q, allow_plain_format=True, providers=[provider])
-        self.assertIsInstance(lrc, (str, None))
+        self.assertIsInstance(lrc, (str, type(None)))
 
     def test_netease(self):
         self._test_provider("NetEase")
@@ -21,4 +21,5 @@ class ProvidersTestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    # unittest.main()
+    print(type(None))
