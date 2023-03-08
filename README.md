@@ -17,7 +17,7 @@ syncedlyrics "SEARCH_TERM"
 | --- | --- |
 | `-o` | Path to save `.lrc` lyrics, default="{search_term}.lrc" |
 | `-v` | Use this flag to show the logs |
-| `--allow-plain` | Return a plain text (not synced) lyrics if not LRC was found |
+| `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |
 
 ### Python
 ```py
