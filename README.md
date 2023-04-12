@@ -30,8 +30,9 @@ syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_123
 ```
 
 ## Providers
-- [NetEase](https://music.163.com/)
+- [Musixmatch](https://www.musixmatch.com/)
 - [Lyricsify](https://www.lyricsify.com/)
+- [NetEase](https://music.163.com/)
 - [Megalobiz](https://www.megalobiz.com/)
 - ~~[Deezer](https://deezer.com/)~~ (Currently broken, PR is appreciated)
 
@@ -39,6 +40,3 @@ Feel free to suggest more providers please.
 
 ## License
 [MIT](https://github.com/rtcq/syncedlyrics/blob/master/LICENSE)
-
-## Notes
-I also found a [repo](https://github.com/fashni/MxLRC) for Musixmatch API, but it has annoying API rate limits at the moment
