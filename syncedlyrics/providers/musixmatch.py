@@ -21,7 +21,10 @@ class Musixmatch(LRCProvider):
 	def get_lrc(self, search_term: str) -> Optional[str]:
 		url = self.SEARCH_ENDPOINT.format(q=search_term, token=self.USER_TOKEN)
 		r = self.session.get(url)
-		tracks = r.json()["message"]["body"]["track_list"]
+		body = r.json()["message"]["body"]
+		if not body:
+			return
+		tracks = body["track_list"]
 		if not tracks:
 			return
 		return self.get_lrc_by_id(tracks[0]["track"]["track_id"])
