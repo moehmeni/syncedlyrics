@@ -23,6 +23,7 @@ class Musixmatch(LRCProvider):
 		r = self.session.get(url)
 		body = r.json()["message"]["body"]
 		if not body:
+		# 401 - captcha
 			return
 		tracks = body["track_list"]
 		if not tracks:
