@@ -22,7 +22,7 @@ class Lyricsify(LRCProvider):
 
         # Just processing the `a` tags whose `href` attribute starts with /lyric/
         # and whose text is similar to the query too. https://github.com/maxbachmann/RapidFuzz#scorers
-        _t = lambda s: s.lower().replace("-", "")
+        _t = lambda s: s.lower().replace("-", "") if s else s
         text_match = lambda t: rapidfuzz.fuzz.token_sort_ratio(_t(search_term), _t(t))
         href_match = lambda h: h.startswith("/lyric/")
         a_tags_boud = SoupStrainer("a", href=href_match)
