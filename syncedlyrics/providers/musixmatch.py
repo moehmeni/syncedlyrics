@@ -14,6 +14,8 @@ class Musixmatch(LRCProvider):
     def get_lrc_by_id(self, track_id: str) -> Optional[str]:
         url = self.LRC_ENDPOINT.format(track_id=track_id, token=self.USER_TOKEN)
         r = self.session.get(url)
+        if not r.ok:
+            return
         body = r.json()["message"]["body"]
         if not body:
             return
@@ -22,9 +24,10 @@ class Musixmatch(LRCProvider):
     def get_lrc(self, search_term: str) -> Optional[str]:
         url = self.SEARCH_ENDPOINT.format(q=search_term, token=self.USER_TOKEN)
         r = self.session.get(url)
+        if not r.ok:
+            return
         body = r.json()["message"]["body"]
         if not body:
-            # 401 - captcha
             return
         tracks = body["track_list"]
         if not tracks:
