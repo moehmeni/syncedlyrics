@@ -34,10 +34,10 @@ syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_123
 - [Musixmatch](https://www.musixmatch.com/)
 - [NetEase](https://music.163.com/)
 - [Megalobiz](https://www.megalobiz.com/)
-- ~~[Lyricsify](https://www.lyricsify.com/)~~ (Broken, should bypass Cloudflare proteciton)
+- ~~[Lyricsify](https://www.lyricsify.com/)~~ (Broken, should bypass Cloudflare protection)
 - ~~[Deezer](https://deezer.com/)~~ (Broken)
 
-Feel free to suggest more providers or making PRs to fix the broken providers.
+Feel free to suggest more providers or make PRs to fix the broken ones.
 
 ## License
 [MIT](https://github.com/rtcq/syncedlyrics/blob/master/LICENSE)
