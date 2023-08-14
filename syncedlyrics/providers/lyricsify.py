@@ -6,6 +6,9 @@ import rapidfuzz
 from .base import LRCProvider
 from ..utils import generate_bs4_soup
 
+# Currently broken
+# TODO: Bypassing Cloudflare anti-bot system
+
 
 class Lyricsify(LRCProvider):
     """Lyricsify LRC provider class"""
