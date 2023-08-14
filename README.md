@@ -30,13 +30,14 @@ syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_123
 ```
 
 ## Providers
+- [Lrclib](https://github.com/tranxuanthang/lrcget/issues/2#issuecomment-1326925928)
 - [Musixmatch](https://www.musixmatch.com/)
-- [Lyricsify](https://www.lyricsify.com/)
 - [NetEase](https://music.163.com/)
 - [Megalobiz](https://www.megalobiz.com/)
-- ~~[Deezer](https://deezer.com/)~~ (Currently broken, PR is appreciated)
+- ~~[Lyricsify](https://www.lyricsify.com/)~~ (Broken, should bypass Cloudflare proteciton)
+- ~~[Deezer](https://deezer.com/)~~ (Broken)
 
-Feel free to suggest more providers please.
+Feel free to suggest more providers or making PRs to fix the broken providers.
 
 ## License
 [MIT](https://github.com/rtcq/syncedlyrics/blob/master/LICENSE)

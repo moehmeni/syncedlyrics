@@ -9,7 +9,7 @@ lrc_text = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
 
 from typing import Optional, List
 import logging
-from .providers import NetEase, Lyricsify, Megalobiz, Musixmatch
+from .providers import NetEase, Megalobiz, Musixmatch, Lrclib
 from .utils import is_lrc_valid, save_lrc_file
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ def search(
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     """
-    _providers = [Lyricsify(), Musixmatch(), NetEase(), Megalobiz()]
+    _providers = [Lrclib(), Musixmatch(), NetEase(), Megalobiz()]
     if providers:
         # Filtering the providers
         _providers = [p for p in _providers if p.__class__.__name__ in providers]
