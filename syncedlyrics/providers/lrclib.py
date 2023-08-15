@@ -26,8 +26,7 @@ class Lrclib(LRCProvider):
     def get_lrc(self, search_term: str) -> Optional[str]:
         url = self.SEARCH_ENDPOINT
         r = self.session.get(url, params={"q": search_term})
-        if not r.ok or not r.content:
-            print("bad")
+        if not r.ok:
             return
         tracks = r.json()
         if not tracks:
