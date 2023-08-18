@@ -87,4 +87,6 @@ class Musixmatch(LRCProvider):
         )
         body = r.json()["message"]["body"]
         tracks = body["track_list"]
+        if not tracks:
+            return
         return self.get_lrc_by_id(tracks[0]["track"]["track_id"])
