@@ -1,0 +1,43 @@
+name: Publish to PyPI on Version Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_version_and_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.x
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+
+      - name: Check for Version Change
+        id: check_version
+        run: |
+          current_version=$(poetry version --short)
+          last_commit_message=$(git log -1 --pretty=%s)
+
+          if [[ $last_commit_message =~ ^v$current_version ]]; then
+            echo "Version change detected. Proceeding with PyPI publish."
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "No version change detected. Skipping PyPI publish."
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to PyPI
+        if: steps.check_version.outputs.version_changed == 'true'
+        run: |
+          poetry publish -u __token__ -p ${{ secrets.PYPI_TOKEN }} --build
