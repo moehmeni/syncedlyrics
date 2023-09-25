@@ -3,7 +3,7 @@
 import os
 from syncedlyrics import search
 
-q = os.getenv("TEST_Q", "bad guy billie eilish")
+q = os.getenv("TEST_Q", "cranberries zombie")
 
 def _test_provider(provider: str):
 	lrc = search(q, allow_plain_format=True, providers=[provider])
