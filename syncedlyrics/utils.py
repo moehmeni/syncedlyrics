@@ -1,6 +1,7 @@
 """Utility functions for `syncedlyrics` package"""
 
 from bs4 import BeautifulSoup, FeatureNotFound
+import rapidfuzz
 
 
 def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
@@ -30,3 +31,13 @@ def generate_bs4_soup(session, url: str, **kwargs):
     except FeatureNotFound:
         soup = BeautifulSoup(r.text, features="html.parser", **kwargs)
     return soup
+
+
+def str_score(a: str, b: str) -> float:
+    """Returns the similarity score of the two strings"""
+    return rapidfuzz.fuzz.token_sort_ratio(a, b)
+
+
+def str_same(a: str, b: str, n: int = 70) -> bool:
+    """Returns `True` if the similarity score of the two strings is greater than `n`"""
+    return str_score(a, b) > n
