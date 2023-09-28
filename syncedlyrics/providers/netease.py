@@ -2,7 +2,7 @@
 
 from typing import Optional
 from .base import LRCProvider
-from ..utils import str_same
+from ..utils import get_best_match
 
 headers = {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -37,10 +37,8 @@ class NetEase(LRCProvider):
         results = response.json().get("result", {}).get("songs")
         if not results:
             return
-        track = results[0]
-        track_name = f"{track.get('name')} {track.get('artists')[0].get('name')}"
-        if not str_same(search_term, track_name):
-            return
+        cmp_key = lambda t: f"{t.get('name')} {t.get('artists')[0].get('name')}"
+        track = get_best_match(results, search_term, cmp_key)
         # Update the session cookies from the new sent cookies for the next request.
         self.session.cookies.update(response.cookies)
         self.session.headers.update({"referer": response.url})

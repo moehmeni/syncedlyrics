@@ -2,6 +2,7 @@
 
 from typing import Optional
 from .base import LRCProvider
+from ..utils import get_best_match
 
 # Currently broken
 # TODO: Fix invalid CSRF token
@@ -44,7 +45,8 @@ class Deezer(LRCProvider):
 
     def get_lrc(self, search_term: str) -> Optional[str]:
         search_results = self.session.get(self.SEARCH_ENDPOINT + search_term).json()
-        if not search_results.get("data"):
+        cmp_key = lambda t: f"{t.get('title')} {t.get('artist').get('name')}"
+        track = get_best_match(search_results.get("data", []), search_term, cmp_key)
+        if not track:
             return
-        song = search_results.get("data")[0]
-        return self.get_lrc_by_id(song["id"])
+        return self.get_lrc_by_id(track["id"])

@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup, FeatureNotFound
 import rapidfuzz
+from typing import Union, Callable, Optional
 
 
 def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
@@ -41,3 +42,43 @@ def str_score(a: str, b: str) -> float:
 def str_same(a: str, b: str, n: int = 70) -> bool:
     """Returns `True` if the similarity score of the two strings is greater than `n`"""
     return str_score(a, b) > n
+
+
+def sort_results(
+    results: list,
+    search_term: str,
+    compare_key: Union[str, Callable[[dict], str]] = "name",
+) -> list:
+    """
+    Sorts the API results based on the similarity score of the `compare_key` with
+    the `search_term`.
+
+    ## Parameters
+    - `results`: The API results
+    - `search_term`: The search term
+    - `compare_key`: The key to compare the `search_term` with. Can be a string or a
+    function that takes a track and returns a string.
+    """
+    if isinstance(compare_key, str):
+        compare_key = lambda t: t[compare_key]
+    sort_key = lambda t: str_score(compare_key(t), search_term)
+    return sorted(results, key=sort_key, reverse=True)
+
+
+def get_best_match(
+    results: list,
+    search_term: str,
+    compare_key: Union[str, Callable[[dict], str]] = "name",
+    min_score: int = 55,
+) -> Optional[dict]:
+    """
+    Returns the best match from the API results based on the similarity score of the `compare_key`
+    with the `search_term`.
+    """
+    if not results:
+        return
+    results = sort_results(results, search_term, compare_key=compare_key)
+    best_match = results[0]
+    if not str_same(compare_key(best_match), search_term, n=min_score):
+        return
+    return best_match

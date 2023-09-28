@@ -1,10 +1,11 @@
 """Musixmatch LRC provider"""
 
 from typing import Optional, List
-from .base import LRCProvider
 import time
 import json
 import os
+from .base import LRCProvider
+from ..utils import get_best_match
 
 # Inspired from https://github.com/Marekkon5/onetagger/blob/0654131188c4df2b4b171ded7cdb927a4369746e/crates/onetagger-platforms/src/musixmatch.rs
 # Huge part converted from Rust to Py by ChatGPT :)
@@ -87,6 +88,8 @@ class Musixmatch(LRCProvider):
         )
         body = r.json()["message"]["body"]
         tracks = body["track_list"]
-        if not tracks:
+        cmp_key = lambda t: f"{t['track']['track_name']} {t['track']['artist_name']}"
+        track = get_best_match(tracks, search_term, cmp_key)
+        if not track:
             return
-        return self.get_lrc_by_id(tracks[0]["track"]["track_id"])
+        return self.get_lrc_by_id(track["track"]["track_id"])

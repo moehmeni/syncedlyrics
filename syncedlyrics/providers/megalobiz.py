@@ -3,7 +3,7 @@
 from typing import Optional
 from bs4 import SoupStrainer
 from .base import LRCProvider
-from ..utils import generate_bs4_soup
+from ..utils import generate_bs4_soup, get_best_match
 
 
 class Megalobiz(LRCProvider):
@@ -22,10 +22,14 @@ class Megalobiz(LRCProvider):
 
         a_tags_boud = SoupStrainer("a", href=href_match)
         soup = generate_bs4_soup(self.session, url, parse_only=a_tags_boud)
-        # Selecting the first a tag
-        # TODO: We can also sort a tags based on a string similarity as done for
-        # Lyricsify provider before, but for now this seem to be enough
-        a_tag = soup.find("a")
+
+        def a_text(a):
+            # In MegaLobiz, we have some `a` tags that have the following text:
+            # artist track ( lyrics ) [05:10.47] (we don't want that extra text)
+            part = a.get_text().replace("by", "").split()[: search_term.count(" ") + 1]
+            return " ".join(part)
+
+        a_tag = get_best_match(soup.find_all("a"), search_term, a_text)
         if not a_tag:
             return None
         # Scraping from the LRC page
