@@ -2,21 +2,29 @@
 
 import os
 from syncedlyrics import search
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 q = os.getenv("TEST_Q", "cranberries zombie")
 
+
 def _test_provider(provider: str):
-	lrc = search(q, allow_plain_format=True, providers=[provider])
-	assert isinstance(lrc, str)
+    lrc = search(q, allow_plain_format=True, providers=[provider])
+    assert isinstance(lrc, str)
+
 
 def test_netease():
-	_test_provider("NetEase")
+    _test_provider("NetEase")
+
 
 def test_megalobiz():
-	_test_provider("Megalobiz")
-	
+    _test_provider("Megalobiz")
+
+
 def test_musixmatch():
-	_test_provider("Musixmatch")
+    _test_provider("Musixmatch")
+
 
 def test_lrclib():
-	_test_provider("Lrclib")
+    _test_provider("Lrclib")

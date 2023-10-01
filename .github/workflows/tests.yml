@@ -38,4 +38,4 @@ jobs:
           poetry install
 
       - name: Running provider tests
-        run: poetry run python -m pytest -q tests.py --durations=0 -vv
+        run: poetry run python -m pytest --durations=0 -vv -s --log-cli-level=DEBUG tests.py 
