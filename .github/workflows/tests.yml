@@ -1,17 +1,16 @@
-name: Tests
+name: Tests (debug branch)
 
 on:
   schedule:
     - cron: "26 5 * * *" # Every day, 05:26 UTC
   push:
     branches:
-      - main
       - debug
     paths:
       - "syncedlyrics/**"
   pull_request:
     branches:
-      - main
+      - debug
     paths:
       - "syncedlyrics/**"
   workflow_dispatch:
