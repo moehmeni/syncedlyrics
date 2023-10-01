@@ -3,6 +3,7 @@
 import os
 from syncedlyrics import search
 import logging
+import time
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -19,8 +20,8 @@ def test_netease():
         _test_provider("NetEase")
     except AssertionError as e:
         # Netease sometimes returns different results (only seen during CI).
-        # Trying again.
         logging.warning("First attempt failed. Trying again.")
+        time.sleep(3)
         _test_provider("NetEase")
 
 
