@@ -37,8 +37,8 @@ class NetEase(LRCProvider):
         """Returns a `dict` containing some metadata for the found track."""
         params = {"limit": 10, "type": 1, "offset": 0, "s": search_term}
         response = self.session.get(self.API_ENDPOINT_METADATA, params=params)
+        logger.debug(f"NetEase search response: {response.text}")
         results = response.json().get("result", {}).get("songs")
-        logger.debug(f"NetEase search results: {results}")
         if not results:
             return
         cmp_key = lambda t: f"{t.get('name')} {t.get('artists')[0].get('name')}"
