@@ -3,6 +3,9 @@
 from typing import Optional
 from .base import LRCProvider
 from ..utils import get_best_match
+import logging
+
+logger = logging.getLogger(__name__)
 
 headers = {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -35,6 +38,7 @@ class NetEase(LRCProvider):
         params = {"limit": 10, "type": 1, "offset": 0, "s": search_term}
         response = self.session.get(self.API_ENDPOINT_METADATA, params=params)
         results = response.json().get("result", {}).get("songs")
+        logger.debug(f"NetEase search results: {results}")
         if not results:
             return
         cmp_key = lambda t: f"{t.get('name')} {t.get('artists')[0].get('name')}"
@@ -47,6 +51,7 @@ class NetEase(LRCProvider):
     def get_lrc_by_id(self, track_id: str) -> Optional[str]:
         params = {"id": track_id, "lv": 1}
         response = self.session.get(self.API_ENDPOINT_LYRICS, params=params)
+        logger.debug(f"NetEase lyrics response: {response.text}")
         lrc = response.json().get("lrc", {}).get("lyric")
         if not lrc:
             return
