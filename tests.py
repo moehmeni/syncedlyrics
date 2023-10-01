@@ -16,13 +16,7 @@ def _test_provider(provider: str):
 
 
 def test_netease():
-    try:
-        _test_provider("NetEase")
-    except AssertionError as e:
-        # Netease sometimes returns different results (only seen during CI).
-        logging.warning("First attempt failed. Trying again.")
-        time.sleep(3)
-        _test_provider("NetEase")
+	_test_provider("NetEase")
 
 
 def test_megalobiz():
