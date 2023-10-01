@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - "syncedlyrics/**"
+  workflow_dispatch:
 
 jobs:
   provider-tests:
@@ -38,4 +39,4 @@ jobs:
           poetry install
 
       - name: Running provider tests
-        run: poetry run python -m pytest --durations=0 -vv -s --log-cli-level=DEBUG tests.py 
+        run: poetry run python -m pytest --durations=0 -vv -s --log-cli-level=DEBUG tests.py
