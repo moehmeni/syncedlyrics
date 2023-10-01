@@ -2,6 +2,9 @@
 
 import os
 from syncedlyrics import search
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 q = os.getenv("TEST_Q", "cranberries zombie")
 
@@ -17,6 +20,7 @@ def test_netease():
     except AssertionError as e:
         # Netease sometimes returns different results (only seen during CI).
         # Trying again.
+        logging.warning("First attempt failed. Trying again.")
         _test_provider("NetEase")
 
 
