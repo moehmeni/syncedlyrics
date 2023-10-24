@@ -39,7 +39,7 @@ class Lrclib(LRCProvider):
         # Getting the first track that its `syncedLyrics` is not empty
         _id = None
         for track in tracks:
-            if track.get("syncedLyrics", "") and track.get("syncedLyrics", "").strip():
+            if (track.get("syncedLyrics", "") or "").strip():
                 _id = str(track["id"])
                 break
         if not _id:
