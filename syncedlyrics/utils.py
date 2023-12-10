@@ -69,7 +69,7 @@ def get_best_match(
     results: list,
     search_term: str,
     compare_key: Union[str, Callable[[dict], str]] = "name",
-    min_score: int = 55,
+    min_score: int = 65,
 ) -> Optional[dict]:
     """
     Returns the best match from the API results based on the similarity score of the `compare_key`
