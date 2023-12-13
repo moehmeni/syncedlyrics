@@ -29,7 +29,7 @@ def search(
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     """
-    _providers = [Lrclib(), Musixmatch(), NetEase(), Megalobiz()]
+    _providers = [Musixmatch(), Lrclib(), NetEase(), Megalobiz()]
     if providers:
         # Filtering the providers
         _providers = [p for p in _providers if p.__class__.__name__ in providers]

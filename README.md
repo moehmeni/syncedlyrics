@@ -16,6 +16,7 @@ syncedlyrics "SEARCH_TERM"
 | Flag | Description |
 | --- | --- |
 | `-o` | Path to save `.lrc` lyrics, default="{search_term}.lrc" |
+| `-p` | Comma-separated list of providers to include in searching |
 | `-v` | Use this flag to show the logs |
 | `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |
 
@@ -30,8 +31,8 @@ syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_123
 ```
 
 ## Providers
-- [Lrclib](https://github.com/tranxuanthang/lrcget/issues/2#issuecomment-1326925928)
 - [Musixmatch](https://www.musixmatch.com/)
+- [Lrclib](https://github.com/tranxuanthang/lrcget/issues/2#issuecomment-1326925928)
 - [NetEase](https://music.163.com/)
 - [Megalobiz](https://www.megalobiz.com/)
 - ~~[Lyricsify](https://www.lyricsify.com/)~~ (Broken, should bypass Cloudflare protection)
