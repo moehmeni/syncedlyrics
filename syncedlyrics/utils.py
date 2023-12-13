@@ -41,7 +41,7 @@ def str_score(a: str, b: str) -> float:
 
 def str_same(a: str, b: str, n: int = 70) -> bool:
     """Returns `True` if the similarity score of the two strings is greater than `n`"""
-    return str_score(a, b) > n
+    return round(str_score(a, b)) >= n
 
 
 def sort_results(
