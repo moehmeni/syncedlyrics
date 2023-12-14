@@ -13,6 +13,11 @@ def cli_handler():
     )
     parser.add_argument("search_term", help="The search term to find the track.")
     parser.add_argument(
+        "-p",
+        help="Comma-separated list of providers to include in searching",
+        default="",
+    )
+    parser.add_argument(
         "-o", "--output", help="Path to save '.lrc' lyrics", default="{search_term}.lrc"
     )
     parser.add_argument(
@@ -24,9 +29,8 @@ def cli_handler():
         "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     args = parser.parse_args()
-
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
-
-    lrc = search(args.search_term, args.allow_plain, args.output)
+    p = args.p.split(",") if args.p else None
+    lrc = search(args.search_term, args.allow_plain, args.output, p)
     if lrc:
         print(lrc)

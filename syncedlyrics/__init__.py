@@ -30,9 +30,18 @@ def search(
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     """
     _providers = [Musixmatch(), Lrclib(), NetEase(), Megalobiz()]
-    if providers:
+    if providers and any(providers):
         # Filtering the providers
-        _providers = [p for p in _providers if p.__class__.__name__ in providers]
+        _providers = [
+            p
+            for p in _providers
+            if p.__class__.__name__.lower() in [p.lower() for p in providers]
+        ]
+    if not _providers:
+        logger.error(
+            f"Providers {providers} not found in the list of available providers."
+        )
+        return
     lrc = None
     for provider in _providers:
         logger.debug(f"Looking for an LRC on {provider.__class__.__name__}")
