@@ -3,6 +3,9 @@
 from bs4 import BeautifulSoup, FeatureNotFound
 import rapidfuzz
 from typing import Union, Callable, Optional
+import re
+
+R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
 
 def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
@@ -36,10 +39,14 @@ def generate_bs4_soup(session, url: str, **kwargs):
 
 def str_score(a: str, b: str) -> float:
     """Returns the similarity score of the two strings"""
-    return rapidfuzz.fuzz.token_sort_ratio(a, b)
+    # if user does not specify any "feat" in the search term,
+    # remove the "feat" from the search results' names
+    if "feat" not in b.lower():
+        a, b = R_FEAT.sub("", a), R_FEAT.sub("", b)
+    return rapidfuzz.fuzz.token_set_ratio(a, b)
 
 
-def str_same(a: str, b: str, n: int = 70) -> bool:
+def str_same(a: str, b: str, n: int) -> bool:
     """Returns `True` if the similarity score of the two strings is greater than `n`"""
     return round(str_score(a, b)) >= n
 
