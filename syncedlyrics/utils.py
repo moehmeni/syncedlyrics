@@ -41,7 +41,8 @@ def str_score(a: str, b: str) -> float:
     """Returns the similarity score of the two strings"""
     # if user does not specify any "feat" in the search term,
     # remove the "feat" from the search results' names
-    if "feat" not in b.lower():
+    a, b = a.lower(), b.lower()
+    if "feat" not in b:
         a, b = R_FEAT.sub("", a), R_FEAT.sub("", b)
     return rapidfuzz.fuzz.token_set_ratio(a, b)
 
