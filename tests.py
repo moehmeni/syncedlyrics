@@ -9,8 +9,9 @@ logging.basicConfig(level=logging.DEBUG)
 q = os.getenv("TEST_Q", "bad guy billie eilish")
 
 
-def _test_provider(provider: str):
-    lrc = syncedlyrics.search(q, allow_plain_format=True, providers=[provider])
+def _test_provider(provider: str, **kwargs):
+    lrc = syncedlyrics.search(q, allow_plain_format=True, providers=[provider], **kwargs)
+    logging.debug(lrc)
     assert isinstance(lrc, str)
 
 
@@ -25,12 +26,8 @@ def test_megalobiz():
 def test_musixmatch():
     _test_provider("Musixmatch")
 
+def test_musixmatch_translation():
+    _test_provider("Musixmatch", lang="es")
 
 def test_lrclib():
     _test_provider("Lrclib")
-
-
-def test_mx_translation():
-    p = syncedlyrics.providers.Musixmatch()
-    lrc = p.get_lrc(q, lang="de")
-    assert isinstance(lrc, str)

@@ -17,20 +17,21 @@ def cli_handler():
         help="Comma-separated list of providers to include in searching",
         default="",
     )
+    parser.add_argument("-l", "--lang", help="Language of the translation along with the lyrics")
     parser.add_argument(
         "-o", "--output", help="Path to save '.lrc' lyrics", default="{search_term}.lrc"
+    )
+    parser.add_argument(
+        "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     parser.add_argument(
         "--allow-plain",
         help="Return a plain text (not synced) lyrics if not LRC was found",
         action="store_true",
     )
-    parser.add_argument(
-        "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
-    )
     args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
     p = args.p.split(",") if args.p else None
-    lrc = search(args.search_term, args.allow_plain, args.output, p)
+    lrc = search(args.search_term, args.allow_plain, args.output, p, lang=args.lang)
     if lrc:
         print(lrc)

@@ -16,8 +16,9 @@ class Musixmatch(LRCProvider):
 
     ROOT_URL = "https://apic-desktop.musixmatch.com/ws/1.1/"
 
-    def __init__(self) -> None:
+    def __init__(self, lang : str = None) -> None:
         super().__init__()
+        self.lang = lang
         self.token = None
         self.session.headers.update(
             {
@@ -66,14 +67,31 @@ class Musixmatch(LRCProvider):
 
     def get_lrc_by_id(self, track_id: str) -> Optional[str]:
         r = self._get(
-            "track.subtitle.get", [("track_id", track_id), ("subtitle_format", "lrc")]
+            "track.subtitle.get",
+            [("track_id", track_id), ("subtitle_format", "lrc")],
         )
+        if self.lang is not None:
+            r_tr = self._get(
+                "crowd.track.translations.get",
+                [
+                    ("track_id", track_id),
+                    ("subtitle_format", "lrc"),
+                    ("translation_fields_set", "minimal"),
+                    ("selected_language", self.lang),
+                ],
+            )
+            body_tr = r_tr.json()["message"]["body"]
         if not r.ok:
             return
         body = r.json()["message"]["body"]
         if not body:
             return
-        return body["subtitle"]["subtitle_body"]
+        lrc = body["subtitle"]["subtitle_body"]
+        if self.lang is not None and body_tr:
+            for i in body_tr["translations_list"]:
+                org, tr = i["translation"]["subtitle_matched_line"], i["translation"]["description"]
+                lrc = lrc.replace(org, org + "\n" + f"({tr})")
+        return lrc
 
     def get_lrc(self, search_term: str) -> Optional[str]:
         r = self._get(
