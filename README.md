@@ -30,8 +30,8 @@ Or with options:
 ```py
 syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_1234.lrc", providers=["NetEase"])
 ```
-Get a translation along with the original lyrics (seperated by `\n`):
-```
+Get a translation along with the original lyrics (separated by `\n`):
+```py
 syncedlyrics.search("...", lang="de")
 ```
 
