@@ -20,7 +20,7 @@ class Lrclib(LRCProvider):
         url = self.LRC_ENDPOINT + track_id
         r = self.session.get(url)
         if not r.ok:
-            return
+            return None
         track = r.json()
         return track.get("syncedLyrics", track.get("plainLyrics"))
 
@@ -28,10 +28,10 @@ class Lrclib(LRCProvider):
         url = self.SEARCH_ENDPOINT
         r = self.session.get(url, params={"q": search_term})
         if not r.ok:
-            return
+            return None
         tracks = r.json()
         if not tracks:
-            return
+            return None
         tracks = sort_results(
             tracks, search_term, lambda t: f'{t["artistName"]} - {t["trackName"]}'
         )
@@ -43,5 +43,5 @@ class Lrclib(LRCProvider):
                 _id = str(track["id"])
                 break
         if not _id:
-            return
+            return None
         return self.get_lrc_by_id(_id)

@@ -8,7 +8,7 @@ import re
 R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
 
-def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
+def is_lrc_valid(lrc: Optional[str], allow_plain_format: bool = False) -> bool:
     """Checks whether a given LRC string is valid or not."""
     if not lrc:
         return False
@@ -84,9 +84,11 @@ def get_best_match(
     with the `search_term`.
     """
     if not results:
-        return
+        return None
     results = sort_results(results, search_term, compare_key=compare_key)
     best_match = results[0]
-    if not str_same(compare_key(best_match), search_term, n=min_score):
-        return
+
+    value_to_compare = best_match[compare_key] if isinstance(compare_key, str) else compare_key(best_match)
+    if not str_same(value_to_compare, search_term, n=min_score):
+        return None
     return best_match

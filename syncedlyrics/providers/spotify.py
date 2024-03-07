@@ -11,7 +11,7 @@ class Spotify(LRCProvider):
         super().__init__()
 
     @classmethod
-    def get_track_id(search_term: str) -> Optional[str]:
+    def get_track_id(cls, search_term: str) -> Optional[str]:
         """Returns a Spotify track ID for given `search_term`"""
         # TODO: self.client.search(search_term) and processing the results
         raise NotImplementedError
