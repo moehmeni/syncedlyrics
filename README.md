@@ -17,7 +17,7 @@ syncedlyrics "SEARCH_TERM"
 | Flag | Description |
 | --- | --- |
 | `-o` | Path to save `.lrc` lyrics, default="{search_term}.lrc" |
-| `-p` | Comma-separated list of providers to include in searching |
+| `-p` | Space-separated list of providers to include in searching |
 | `-l` | Language code of the translation ([ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) format) |
 | `-v` | Use this flag to show the logs |
 | `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |

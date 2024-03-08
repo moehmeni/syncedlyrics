@@ -14,8 +14,11 @@ def cli_handler():
     parser.add_argument("search_term", help="The search term to find the track.")
     parser.add_argument(
         "-p",
-        help="Comma-separated list of providers to include in searching",
+        help="Providers to include in the searching (separated by space). Default: all providers",
         default="",
+        choices=["deezer", "lrclib", "megalobiz", "musixmatch", "netease"],
+        nargs="+",
+        type=str.lower,
     )
     parser.add_argument(
         "-l", "--lang", help="Language of the translation along with the lyrics"
@@ -32,8 +35,10 @@ def cli_handler():
         action="store_true",
     )
     args = parser.parse_args()
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
-    p = args.p.split(",") if args.p else None
-    lrc = search(args.search_term, args.allow_plain, args.output, p, lang=args.lang)
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    lrc = search(
+        args.search_term, args.allow_plain, args.output, args.p, lang=args.lang
+    )
     if lrc:
         print(lrc)
