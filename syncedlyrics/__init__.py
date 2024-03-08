@@ -32,7 +32,7 @@ def search(
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     - `lang`: Language of the translation along with the lyrics. **Only supported by Musixmatch**
     """
-    _providers = [Musixmatch(lang=lang), Lrclib(), NetEase(), Megalobiz(), Deezer()]
+    _providers = [Musixmatch(lang=lang), Lrclib(), Deezer(), NetEase(), Megalobiz()]
     if providers and any(providers):
         # Filtering the providers
         _providers = [
