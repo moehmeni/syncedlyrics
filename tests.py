@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-q = os.getenv("Los Del Rio", "Macarena")
+q = os.getenv("TEST_Q", "bad guy billie eilish")
 
 
 def _test_provider(provider: str, **kwargs):
