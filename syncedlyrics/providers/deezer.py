@@ -44,9 +44,10 @@ class Deezer(LRCProvider):
         return lrc or None
 
     def get_lrc(self, search_term: str) -> Optional[str]:
-        search_results = self.session.get(self.SEARCH_ENDPOINT + search_term).json()
+        url = self.SEARCH_ENDPOINT + search_term.replace(" ", "+")
+        search_results = self.session.get(url).json()
         cmp_key = lambda t: f"{t.get('title')} {t.get('artist').get('name')}"
         track = get_best_match(search_results.get("data", []), search_term, cmp_key)
         if not track:
-            return
+            return None
         return self.get_lrc_by_id(track["id"])

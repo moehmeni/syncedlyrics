@@ -13,7 +13,7 @@ class Megalobiz(LRCProvider):
     SEARCH_ENDPOINT = ROOT_URL + "/search/all?qry={q}&searchButton.x=0&searchButton.y=0"
 
     def get_lrc(self, search_term: str) -> Optional[str]:
-        url = self.SEARCH_ENDPOINT.format(q=search_term)
+        url = self.SEARCH_ENDPOINT.format(q=search_term.replace(" ", "+"))
 
         def href_match(h: Optional[str]):
             if h and h.startswith("/lrc/maker/"):

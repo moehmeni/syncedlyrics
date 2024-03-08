@@ -16,16 +16,10 @@ class Musixmatch(LRCProvider):
 
     ROOT_URL = "https://apic-desktop.musixmatch.com/ws/1.1/"
 
-    def __init__(self, lang : str = None) -> None:
+    def __init__(self, lang : Optional[str] = None) -> None:
         super().__init__()
         self.lang = lang
         self.token = None
-        self.session.headers.update(
-            {
-                "authority": "apic-desktop.musixmatch.com",
-                "cookie": "AWSELBCORS=0; AWSELB=0",
-            }
-        )
 
     def _get(self, action: str, query: List[tuple]):
         if action != "token.get" and self.token is None:
@@ -82,10 +76,10 @@ class Musixmatch(LRCProvider):
             )
             body_tr = r_tr.json()["message"]["body"]
         if not r.ok:
-            return
+            return None
         body = r.json()["message"]["body"]
         if not body:
-            return
+            return None
         lrc = body["subtitle"]["subtitle_body"]
         if self.lang is not None and body_tr:
             for i in body_tr["translations_list"]:
@@ -109,5 +103,5 @@ class Musixmatch(LRCProvider):
         cmp_key = lambda t: f"{t['track']['track_name']} {t['track']['artist_name']}"
         track = get_best_match(tracks, search_term, cmp_key)
         if not track:
-            return
+            return None
         return self.get_lrc_by_id(track["track"]["track_id"])
