@@ -16,7 +16,7 @@ class Musixmatch(LRCProvider):
 
     ROOT_URL = "https://apic-desktop.musixmatch.com/ws/1.1/"
 
-    def __init__(self, lang : Optional[str] = None) -> None:
+    def __init__(self, lang: Optional[str] = None) -> None:
         super().__init__()
         self.lang = lang
         self.token = None
@@ -83,7 +83,10 @@ class Musixmatch(LRCProvider):
         lrc = body["subtitle"]["subtitle_body"]
         if self.lang is not None and body_tr:
             for i in body_tr["translations_list"]:
-                org, tr = i["translation"]["subtitle_matched_line"], i["translation"]["description"]
+                org, tr = (
+                    i["translation"]["subtitle_matched_line"],
+                    i["translation"]["description"],
+                )
                 lrc = lrc.replace(org, org + "\n" + f"({tr})")
         return lrc
 

@@ -88,7 +88,11 @@ def get_best_match(
     results = sort_results(results, search_term, compare_key=compare_key)
     best_match = results[0]
 
-    value_to_compare = best_match[compare_key] if isinstance(compare_key, str) else compare_key(best_match)
+    value_to_compare = (
+        best_match[compare_key]
+        if isinstance(compare_key, str)
+        else compare_key(best_match)
+    )
     if not str_same(value_to_compare, search_term, n=min_score):
         return None
     return best_match
