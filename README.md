@@ -47,3 +47,16 @@ Feel free to suggest more providers or make PRs to fix the broken ones.
 
 ## License
 [MIT](https://github.com/rtcq/syncedlyrics/blob/master/LICENSE)
+
+## Citation
+If you use this library in your research, you can cite as follows:
+```
+@misc{syncedlyrics,
+  author = {Momeni, Mohammad},
+  title = {syncedlyrics},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/moehmeni/syncedlyrics}},
+}
+```
