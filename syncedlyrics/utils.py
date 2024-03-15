@@ -9,13 +9,13 @@ import re
 R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
 
-def is_lrc_valid(lrc: Optional[str], allow_plain_format: bool = False) -> bool:
+def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
     """Checks whether a given LRC string is valid or not."""
     if not lrc:
         return False
     if not allow_plain_format:
-        if not ("[" in lrc and "]" in lrc):
-            return False
+        conds = ["[" in l for l in lrc.split("\n")[5:8]]
+        return all(conds)
 
     return True
 
