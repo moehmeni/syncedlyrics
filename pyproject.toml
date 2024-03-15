@@ -15,9 +15,9 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-curl_cffi = "^0.6.2"
-rapidfuzz = "^3.6.2"
+requests = "^2.31.0"
 beautifulsoup4 = "^4.12.3"
+rapidfuzz = "^3.6.2"
 
 [tool.poetry.scripts]
 syncedlyrics = "syncedlyrics.cli:cli_handler"
