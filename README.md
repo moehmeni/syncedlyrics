@@ -21,6 +21,7 @@ syncedlyrics "SEARCH_TERM"
 | `-l` | Language code of the translation ([ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) format) |
 | `-v` | Use this flag to show the logs |
 | `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |
+| `--enhanced` | Return an [Enhanced](https://en.wikipedia.org/wiki/LRC_(file_format)#A2_extension:_word_time_tag) (word-level karaoke) format
 
 ### Python
 ```py

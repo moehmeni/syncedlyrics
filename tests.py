@@ -33,6 +33,10 @@ def test_musixmatch_translation():
     _test_provider("Musixmatch", lang="es")
 
 
+def test_musixmatch_enhanced():
+    _test_provider("Musixmatch", enhanced=True)
+
+
 def test_lrclib():
     _test_provider("Lrclib")
 

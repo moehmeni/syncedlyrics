@@ -22,6 +22,7 @@ def search(
     save_path: Optional[str] = None,
     providers: Optional[List[str]] = None,
     lang: Optional[str] = None,
+    enhanced: bool = False,
 ) -> Optional[str]:
     """
     Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
@@ -31,8 +32,15 @@ def search(
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     - `lang`: Language of the translation along with the lyrics. **Only supported by Musixmatch**
+    - `enhanced`: Returns word by word synced lyrics if available. **Only supported by Musixmatch**
     """
-    _providers = [Musixmatch(lang=lang), Lrclib(), Deezer(), NetEase(), Megalobiz()]
+    _providers = [
+        Musixmatch(lang=lang, enhanced=enhanced),
+        Lrclib(),
+        Deezer(),
+        NetEase(),
+        Megalobiz(),
+    ]
     if providers and any(providers):
         # Filtering the providers
         _providers = [
@@ -49,6 +57,9 @@ def search(
     for provider in _providers:
         logger.debug(f"Looking for an LRC on {provider.__class__.__name__}")
         lrc = provider.get_lrc(search_term)
+        if enhanced and not lrc:
+            # Since enhanced is only supported by Musixmatch, break if no LRC is found
+            break
         if is_lrc_valid(lrc, allow_plain_format):
             logger.info(
                 f'synced-lyrics found for "{search_term}" on {provider.__class__.__name__}'

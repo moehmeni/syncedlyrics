@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup, FeatureNotFound
 import rapidfuzz
 from typing import Union, Callable, Optional
+import datetime
 import re
 
 R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
@@ -35,6 +36,13 @@ def generate_bs4_soup(session, url: str, **kwargs):
     except FeatureNotFound:
         soup = BeautifulSoup(r.text, features="html.parser", **kwargs)
     return soup
+
+
+def format_time(time_in_seconds: float):
+    """Returns a [mm:ss.xx] formatted string from the given time in seconds."""
+    time = datetime.timedelta(seconds=time_in_seconds)
+    minutes, seconds = divmod(time.seconds, 60)
+    return f"{minutes:02}:{seconds:02}.{time.microseconds//10000:02}"
 
 
 def str_score(a: str, b: str) -> float:

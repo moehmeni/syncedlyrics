@@ -5,7 +5,7 @@ import time
 import json
 import os
 from .base import LRCProvider
-from ..utils import get_best_match
+from ..utils import get_best_match, format_time
 
 # Inspired from https://github.com/Marekkon5/onetagger/blob/0654131188c4df2b4b171ded7cdb927a4369746e/crates/onetagger-platforms/src/musixmatch.rs
 # Huge part converted from Rust to Py by ChatGPT :)
@@ -16,9 +16,10 @@ class Musixmatch(LRCProvider):
 
     ROOT_URL = "https://apic-desktop.musixmatch.com/ws/1.1/"
 
-    def __init__(self, lang: Optional[str] = None) -> None:
+    def __init__(self, lang: Optional[str] = None, enhanced: bool = False) -> None:
         super().__init__()
         self.lang = lang
+        self.enhanced = enhanced
         self.token = None
 
     def _get(self, action: str, query: List[tuple]):
@@ -90,6 +91,20 @@ class Musixmatch(LRCProvider):
                 lrc = lrc.replace(org, org + "\n" + f"({tr})")
         return lrc
 
+    def get_lrc_word_by_word(self, track_id: str) -> Optional[str]:
+        r = self._get("track.richsync.get", [("track_id", track_id)])
+        if r.ok and r.json()["message"]["header"]["status_code"] == 200:
+            lrc_raw = r.json()["message"]["body"]["richsync"]["richsync_body"]
+            lrc_raw = json.loads(lrc_raw)
+            lrc = ""
+            for i in lrc_raw:
+                lrc += f"[{format_time(i['ts'])}] "
+                for l in i["l"]:
+                    t = format_time(float(i["ts"]) + float(l["o"]))
+                    lrc += f"<{t}> {l['c']} "
+                lrc += "\n"
+            return lrc
+
     def get_lrc(self, search_term: str) -> Optional[str]:
         r = self._get(
             "track.search",
@@ -107,4 +122,7 @@ class Musixmatch(LRCProvider):
         track = get_best_match(tracks, search_term, cmp_key)
         if not track:
             return None
-        return self.get_lrc_by_id(track["track"]["track_id"])
+        track_id = track["track"]["track_id"]
+        if self.enhanced:
+            return self.get_lrc_word_by_word(track_id)
+        return self.get_lrc_by_id(track_id)

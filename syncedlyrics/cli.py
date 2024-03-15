@@ -34,11 +34,21 @@ def cli_handler():
         help="Return a plain text (not synced) lyrics if not LRC was found",
         action="store_true",
     )
+    parser.add_argument(
+        "--enhanced",
+        help="Returns word by word synced lyrics (if available)",
+        action="store_true",
+    )
     args = parser.parse_args()
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
     lrc = search(
-        args.search_term, args.allow_plain, args.output, args.p, lang=args.lang
+        args.search_term,
+        args.allow_plain,
+        args.output,
+        args.p,
+        lang=args.lang,
+        enhanced=args.enhanced,
     )
     if lrc:
         print(lrc)
