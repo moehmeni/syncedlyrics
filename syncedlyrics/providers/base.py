@@ -9,7 +9,7 @@ class LRCProvider:
     """
 
     def __init__(self) -> None:
-        self.session = requests.Session()
+        self.session = requests.Session(impersonate="chrome")
 
     def get_lrc_by_id(self, track_id: str) -> Optional[str]:
         """
