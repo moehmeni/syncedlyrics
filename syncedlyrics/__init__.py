@@ -71,6 +71,7 @@ def search(
             logger.debug(
                 f"Skip {provider.__class__.__name__} as the synced-lyrics is not valid. (allow_plain_format={allow_plain_format})"
             )
+            logger.debug(f"Lyrics: {_l}")
     if not lrc:
         logger.info(f'No synced-lyrics found for "{search_term}" :(')
         return None
