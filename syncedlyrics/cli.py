@@ -16,7 +16,7 @@ def cli_handler():
         "-p",
         help="Providers to include in the searching (separated by space). Default: all providers",
         default="",
-        choices=["deezer", "lrclib", "megalobiz", "musixmatch", "netease"],
+        choices=["deezer", "lrclib", "megalobiz", "musixmatch", "netease", "genius"],
         nargs="+",
         type=str.lower,
     )

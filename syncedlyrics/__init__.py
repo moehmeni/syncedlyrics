@@ -10,7 +10,7 @@ lrc_text = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
 import logging
 from typing import List, Optional
 
-from .providers import Deezer, Lrclib, Megalobiz, Musixmatch, NetEase
+from .providers import Deezer, Lrclib, Megalobiz, Musixmatch, NetEase, Genius
 from .utils import is_lrc_valid, save_lrc_file
 
 logger = logging.getLogger(__name__)
@@ -40,6 +40,7 @@ def search(
         Deezer(),
         NetEase(),
         Megalobiz(),
+        Genius(),
     ]
     if providers and any(providers):
         # Filtering the providers
@@ -56,15 +57,20 @@ def search(
     lrc = None
     for provider in _providers:
         logger.debug(f"Looking for an LRC on {provider.__class__.__name__}")
-        lrc = provider.get_lrc(search_term)
-        if enhanced and not lrc:
+        _l = provider.get_lrc(search_term)
+        if enhanced and not _l:
             # Since enhanced is only supported by Musixmatch, break if no LRC is found
             break
-        if is_lrc_valid(lrc, allow_plain_format):
+        if is_lrc_valid(_l, allow_plain_format):
             logger.info(
                 f'synced-lyrics found for "{search_term}" on {provider.__class__.__name__}'
             )
+            lrc = _l
             break
+        else:
+            logger.debug(
+                f"Skip {provider.__class__.__name__} as the synced-lyrics is not valid. (allow_plain_format={allow_plain_format})"
+            )
     if not lrc:
         logger.info(f'No synced-lyrics found for "{search_term}" :(')
         return None

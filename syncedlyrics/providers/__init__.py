@@ -6,3 +6,4 @@ from .lyricsify import Lyricsify
 from .megalobiz import Megalobiz
 from .musixmatch import Musixmatch
 from .lrclib import Lrclib
+from .genius import Genius
