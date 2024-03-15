@@ -1,4 +1,5 @@
-import requests
+# import requests
+from curl_cffi import requests
 from typing import Optional
 
 
