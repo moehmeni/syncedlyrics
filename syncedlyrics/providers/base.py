@@ -1,5 +1,4 @@
-# import requests
-from curl_cffi import requests
+import requests
 from typing import Optional
 
 
@@ -9,7 +8,7 @@ class LRCProvider:
     """
 
     def __init__(self) -> None:
-        self.session = requests.Session(impersonate="chrome")
+        self.session = requests.Session()
 
     def get_lrc_by_id(self, track_id: str) -> Optional[str]:
         """
