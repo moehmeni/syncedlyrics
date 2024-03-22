@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "syncedlyrics"
-version = "0.8.0"
+version = "0.9.0"
 description = "Get an LRC format (synchronized) lyrics for your music"
 repository = "https://github.com/rtcq/syncedlyrics"
 urls = { "Bug Tracker" = "https://github.com/rtcq/syncedlyrics/issues" }
