@@ -41,8 +41,8 @@ syncedlyrics.search("...", lang="de")
 - [Deezer](https://deezer.com/)
 - [Lrclib](https://github.com/tranxuanthang/lrcget/issues/2#issuecomment-1326925928)
 - [NetEase](https://music.163.com/)
-- [Megalobiz](https://www.megalobiz.com/)
 - [Genius](https://genius.com) (For plain format)
+~~- [Megalobiz](https://www.megalobiz.com/)~~ (Website not working anymore)
 - ~~[Lyricsify](https://www.lyricsify.com/)~~ (Broken duo to Cloudflare protection)
 
 Feel free to suggest more providers or make PRs to fix the broken ones.
