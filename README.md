@@ -17,7 +17,7 @@ syncedlyrics "SEARCH_TERM"
 | Flag | Description |
 | --- | --- |
 | `-o` | Path to save `.lrc` lyrics, default="{search_term}.lrc" |
-| `-p` | Space-separated list of providers to include in searching |
+| `-p` | Space-separated list of [providers](#providers) to include in searching |
 | `-l` | Language code of the translation ([ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) format) |
 | `-v` | Use this flag to show the logs |
 | `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |
@@ -25,15 +25,17 @@ syncedlyrics "SEARCH_TERM"
 
 ### Python
 ```py
+# This simple
 lrc = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
-```
-Or with options:
-```py
+
+# Or with options:
 syncedlyrics.search("...", allow_plain_format=True, save_path="{search_term}_1234.lrc", providers=["NetEase"])
-```
-Get a translation along with the original lyrics (separated by `\n`):
-```py
+
+# Get a translation along with the original lyrics (separated by `\n`):
 syncedlyrics.search("...", lang="de")
+
+# Get a word-by-word (karaoke) synced-lyrics if available
+syncedlyrics.search("...", enhanced=True)
 ```
 
 ## Providers
