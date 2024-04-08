@@ -124,5 +124,6 @@ class Musixmatch(LRCProvider):
             return None
         track_id = track["track"]["track_id"]
         if self.enhanced:
-            return self.get_lrc_word_by_word(track_id)
-        return self.get_lrc_by_id(track_id)
+            return self.get_lrc_word_by_word(track_id) or self.get_lrc_by_id(track_id)
+        else:
+            return self.get_lrc_by_id(track_id)
