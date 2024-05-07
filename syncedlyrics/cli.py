@@ -26,10 +26,10 @@ def cli_handler():
         "-o", "--output", help="Path to save '.lrc' lyrics", default="{search_term}.lrc"
     )
     parser.add_argument(
-        "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
+        "-c", "--clipboard", help="Copies lyrics to clipboard after finish", action="store_true"
     )
     parser.add_argument(
-        "-c", "--clipboard", help="Copies lyrics to clipboard after finish", action="store_true"
+        "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     parser.add_argument(
         "--allow-plain",
