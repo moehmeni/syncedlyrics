@@ -56,7 +56,7 @@ def cli_handler():
         print(lrc)
 
     # = - Adds copy to clipboard (--copy) flag support.
-    if lrc and args.copy:
+    if lrc and args.clipboard:
         import clipman
         try:
             clipman.init()
