@@ -40,7 +40,7 @@ jobs:
 
       - name: Install charset on MacOS
         if: matrix.os == 'macos-latest'
-        run: poetry run pip install charset
+        run: poetry add charset
 
       - name: Running provider tests
         run: poetry run python -m pytest -k "not netease" --durations=0 -vv -s --log-cli-level=DEBUG tests.py
