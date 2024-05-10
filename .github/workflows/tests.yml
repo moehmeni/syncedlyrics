@@ -38,5 +38,8 @@ jobs:
           poetry env use ${{ matrix.python-version }}
           poetry install
 
+      - name: Clear pytest cache
+        run: rm -rf .pytest_cache
+
       - name: Running provider tests
         run: poetry run python -m pytest -k "not netease" --durations=0 -vv -s --log-cli-level=DEBUG tests.py
