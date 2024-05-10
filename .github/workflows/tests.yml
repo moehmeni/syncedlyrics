@@ -38,9 +38,9 @@ jobs:
           poetry env use ${{ matrix.python-version }}
           poetry install
 
-      - name: Install charset on MacOS
+      - name: Install chardet on MacOS
         if: matrix.os == 'macos-latest'
-        run: poetry add charset
+        run: poetry add chardet
 
       - name: Running provider tests
         run: poetry run python -m pytest -k "not netease" --durations=0 -vv -s --log-cli-level=DEBUG tests.py
