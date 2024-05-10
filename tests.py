@@ -41,8 +41,8 @@ def test_deezer():
     _test_provider("Deezer")
 
 
-# def test_megalobiz():
-#     _test_provider("Megalobiz")
+def test_megalobiz():
+    _test_provider("Megalobiz")
 
 # TODO: fix
 # def test_genius():

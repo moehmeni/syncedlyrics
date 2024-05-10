@@ -10,7 +10,7 @@ lrc_text = syncedlyrics.search("[TRACK_NAME] [ARTIST_NAME]")
 import logging
 from typing import List, Optional
 
-from .providers import Deezer, Lrclib, Musixmatch, NetEase, Genius
+from .providers import Deezer, Lrclib, Musixmatch, NetEase, Megalobiz, Genius
 from .utils import is_lrc_valid, save_lrc_file
 
 logger = logging.getLogger(__name__)
@@ -39,6 +39,7 @@ def search(
         Lrclib(),
         Deezer(),
         NetEase(),
+        Megalobiz(),
         Genius(),
     ]
     if providers and any(providers):
