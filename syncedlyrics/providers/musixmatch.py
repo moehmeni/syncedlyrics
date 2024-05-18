@@ -112,8 +112,6 @@ class Musixmatch(LRCProvider):
                 ("q", search_term),
                 ("page_size", "5"),
                 ("page", "1"),
-                ("s_track_rating", "desc"),
-                ("quorum_factor", "1.0"),
             ],
         )
         status_code = r.json()["message"]["header"]["status_code"]
