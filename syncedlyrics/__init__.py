@@ -28,7 +28,7 @@ def search(
     Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
     ### Arguments
     - `search_term`: The search term to find the track
-    - `allow_normal_format`: Return a plain text (not synced) lyrics if not LRC was found
+    - `allow_plain_format`: Return a plain text (not synced) lyrics if not LRC was found
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     - `lang`: Language of the translation along with the lyrics. **Only supported by Musixmatch**
