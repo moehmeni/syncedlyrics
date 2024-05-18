@@ -116,6 +116,10 @@ class Musixmatch(LRCProvider):
                 ("quorum_factor", "1.0"),
             ],
         )
+        status_code = r.json()["message"]["header"]["status_code"]
+        if status_code != 200:
+            self.logger.warning(f"Got status code {status_code} for {search_term}")
+            return None
         body = r.json()["message"]["body"]
         tracks = body["track_list"]
         cmp_key = lambda t: f"{t['track']['track_name']} {t['track']['artist_name']}"
