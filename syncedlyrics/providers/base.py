@@ -1,5 +1,6 @@
 import requests
 from typing import Optional
+import logging
 
 
 class LRCProvider:
@@ -9,6 +10,13 @@ class LRCProvider:
 
     def __init__(self) -> None:
         self.session = requests.Session()
+
+        # Logging setup
+        formatter = logging.Formatter("[%(name)s] %(message)s")
+        handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger.addHandler(handler)
 
     def get_lrc_by_id(self, track_id: str) -> Optional[str]:
         """
