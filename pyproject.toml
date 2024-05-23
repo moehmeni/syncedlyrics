@@ -18,6 +18,7 @@ python = ">=3.8"
 requests = "^2.31.0"
 beautifulsoup4 = "^4.12.3"
 rapidfuzz = "^3.6.2"
+clipman = "^3.2.3"
 
 [tool.poetry.scripts]
 syncedlyrics = "syncedlyrics.cli:cli_handler"
