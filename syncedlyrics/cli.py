@@ -2,6 +2,7 @@ import argparse
 import logging
 from syncedlyrics import search
 
+
 def cli_handler():
     """
     Console entry point handler function.
@@ -24,9 +25,6 @@ def cli_handler():
     )
     parser.add_argument(
         "-o", "--output", help="Path to save '.lrc' lyrics", default="{search_term}.lrc"
-    )
-    parser.add_argument(
-        "-c", "--clipboard", help="Copies lyrics to clipboard after finish", action="store_true"
     )
     parser.add_argument(
         "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
@@ -54,17 +52,3 @@ def cli_handler():
     )
     if lrc:
         print(lrc)
-
-    # = - Adds copy to clipboard (--copy) flag support.
-    if lrc and args.clipboard:
-        import clipman
-        try:
-            clipman.init()
-            clipman.set(lrc)
-            print("\n\n(Copied to clipboard succefully)")
-
-        except clipman.exceptions.ClipmanBaseException as e:
-            print("Some clipboard error was ocurred. If you experience any issues with it, please see https://github.com/NikitaBeloglazov/clipman.")
-            print("\n\nTraceback:")
-            print(e)
-    # - = - = - = -
