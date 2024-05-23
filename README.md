@@ -17,10 +17,9 @@ syncedlyrics "SEARCH_TERM"
 | Flag | Description |
 | --- | --- |
 | `-o` | Path to save `.lrc` lyrics, default="{search_term}.lrc" |
-| `-с` | Copies lyrics to clipboard. Uses [clipman](https://github.com/NikitaBeloglazov/clipman) module |
 | `-p` | Space-separated list of [providers](#providers) to include in searching |
 | `-l` | Language code of the translation ([ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) format) |
-| `-v` | Use this flag to show the logs |  
+| `-v` | Use this flag to show the logs |
 | `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |
 | `--enhanced` | Return an [Enhanced](https://en.wikipedia.org/wiki/LRC_(file_format)#A2_extension:_word_time_tag) (word-level karaoke) format
 
