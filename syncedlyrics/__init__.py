@@ -57,7 +57,14 @@ def search(
     lrc = None
     for provider in _providers:
         logger.debug(f"Looking for an LRC on {provider.__class__.__name__}")
-        _l = provider.get_lrc(search_term)
+        try:
+            _l = provider.get_lrc(search_term)
+        except Exception as e:
+            logger.error(
+                f"An error occurred while searching for an LRC on {provider.__class__.__name__}"
+            )
+            logger.error(e)
+            continue
         if enhanced and not _l:
             # Since enhanced is only supported by Musixmatch, break if no LRC is found
             break
