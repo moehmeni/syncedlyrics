@@ -9,14 +9,24 @@ import re
 R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
 
-def is_lrc_valid(lrc: str, allow_plain_format: bool = False) -> bool:
+def is_lrc_valid(
+    lrc: str, allow_plain_format: bool = False, check_translation: bool = False
+) -> bool:
     """Checks whether a given LRC string is valid or not."""
     if not lrc:
         return False
+    lines = lrc.split("\n")[5:10]
     if not allow_plain_format:
-        conds = ["[" in l for l in lrc.split("\n")[5:8]]
-        return all(conds)
-
+        if not check_translation:
+            conds = ["[" in l for l in lrc.split("\n")[5:10]]
+            return all(conds)
+        else:
+            for i, line in enumerate(lines):
+                if "[" in line:
+                    if i + 1 < len(lines):
+                        next_line = lines[i + 1]
+                        if "(" not in next_line:
+                            return False
     return True
 
 
