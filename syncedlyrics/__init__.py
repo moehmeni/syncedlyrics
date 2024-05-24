@@ -68,7 +68,7 @@ def search(
         if enhanced and not _l:
             # Since enhanced is only supported by Musixmatch, break if no LRC is found
             break
-        if is_lrc_valid(_l, allow_plain_format):
+        if is_lrc_valid(_l, allow_plain_format, lang is not None):
             logger.info(
                 f'synced-lyrics found for "{search_term}" on {provider.__class__.__name__}'
             )
