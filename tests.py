@@ -15,6 +15,7 @@ def _test_provider(provider: str, **kwargs):
     )
     logging.debug(lrc)
     assert isinstance(lrc, str)
+    return lrc
 
 
 def test_netease():
@@ -26,7 +27,9 @@ def test_musixmatch():
 
 
 def test_musixmatch_translation():
-    _test_provider("Musixmatch", lang="es")
+    lrc = _test_provider("Musixmatch", lang="es")
+    # not only testing there is a result, but the translation is also included
+    assert syncedlyrics.is_lrc_valid(lrc, check_translation=True)
 
 
 def test_musixmatch_enhanced():
@@ -39,6 +42,7 @@ def test_lrclib():
 
 def test_deezer():
     _test_provider("Deezer")
+
 
 # Fails randomly on CI
 # def test_megalobiz():
