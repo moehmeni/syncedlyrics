@@ -40,7 +40,7 @@ def generate_bs4_soup(session, url: str, **kwargs):
     """Returns a `BeautifulSoup` from the given `url`.
     Tries to use `lxml` as the parser if available, otherwise `html.parser`
     """
-    r = session.get(url)
+    r = session.get(url, timeout=10)
     try:
         soup = BeautifulSoup(r.text, features="lxml", **kwargs)
     except FeatureNotFound:
