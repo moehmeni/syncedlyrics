@@ -3,13 +3,18 @@ from typing import Optional
 import logging
 
 
+class TimeoutSession(requests.Session):
+    def request(self, method, url, **kwargs):
+        kwargs.setdefault("timeout", (2,5))
+        return super().request(method, url, **kwargs)
+
 class LRCProvider:
     """
     Base class for all of the synced (LRC format) lyrics providers.
     """
 
     def __init__(self) -> None:
-        self.session = requests.Session()
+        self.session = TimeoutSession()
 
         # Logging setup
         formatter = logging.Formatter("[%(name)s] %(message)s")
