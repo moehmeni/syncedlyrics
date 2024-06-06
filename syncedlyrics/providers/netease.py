@@ -25,8 +25,7 @@ class NetEase(LRCProvider):
         if not results:
             return None
 
-        def cmp_key(t): return f"{t.get('name')} {
-            t.get('artists')[0].get('name')}"
+        def cmp_key(t): return f"{t.get('name')} {t.get('artists')[0].get('name')}"
         track = get_best_match(results, search_term, cmp_key)
         # Update the session cookies from the new sent cookies for the next request.
         self.session.cookies.update(response.cookies)
