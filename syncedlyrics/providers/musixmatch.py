@@ -5,10 +5,11 @@ import time
 import json
 import os
 from .base import LRCProvider
-from ..utils import get_best_match, format_time
+from ..utils import Lyrics, get_best_match, format_time
 
 # Inspired from https://github.com/Marekkon5/onetagger/blob/0654131188c4df2b4b171ded7cdb927a4369746e/crates/onetagger-platforms/src/musixmatch.rs
 # Huge part converted from Rust to Py by ChatGPT :)
+# Whyyyy did you convert it from a good language to a bad one? :P
 
 
 class Musixmatch(LRCProvider):
@@ -60,11 +61,12 @@ class Musixmatch(LRCProvider):
         with open(token_path, "w") as token_file:
             json.dump(token_data, token_file)
 
-    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+    def get_lrc_by_id(self, track_id: str) -> Optional[Lyrics]:
         r = self._get(
             "track.subtitle.get",
             [("track_id", track_id), ("subtitle_format", "lrc")],
         )
+        print(self.lang)
         if self.lang is not None:
             r_tr = self._get(
                 "crowd.track.translations.get",
@@ -76,36 +78,42 @@ class Musixmatch(LRCProvider):
                 ],
             )
             body_tr = r_tr.json()["message"]["body"]
+            if not body_tr["translations_list"]:
+                raise Exception("Couldn't find translations")
         if not r.ok:
             return None
         body = r.json()["message"]["body"]
         if not body:
             return None
-        lrc = body["subtitle"]["subtitle_body"]
-        if self.lang is not None and body_tr:
+        lrc_str = body["subtitle"]["subtitle_body"]
+        if self.lang is not None:
             for i in body_tr["translations_list"]:
                 org, tr = (
                     i["translation"]["subtitle_matched_line"],
                     i["translation"]["description"],
                 )
-                lrc = lrc.replace(org, org + "\n" + f"({tr})")
+                lrc_str = lrc_str.replace(org, org + "\n" + f"({tr})")
+        lrc = Lyrics()
+        lrc.synced = lrc_str
         return lrc
 
-    def get_lrc_word_by_word(self, track_id: str) -> Optional[str]:
+    def get_lrc_word_by_word(self, track_id: str) -> Optional[Lyrics]:
+        lrc = Lyrics()
         r = self._get("track.richsync.get", [("track_id", track_id)])
         if r.ok and r.json()["message"]["header"]["status_code"] == 200:
             lrc_raw = r.json()["message"]["body"]["richsync"]["richsync_body"]
             lrc_raw = json.loads(lrc_raw)
-            lrc = ""
+            lrc_str = ""
             for i in lrc_raw:
-                lrc += f"[{format_time(i['ts'])}] "
+                lrc_str += f"[{format_time(i['ts'])}] "
                 for l in i["l"]:
                     t = format_time(float(i["ts"]) + float(l["o"]))
-                    lrc += f"<{t}> {l['c']} "
-                lrc += "\n"
-            return lrc
+                    lrc_str += f"<{t}> {l['c']} "
+                lrc_str += "\n"
+            lrc.synced = lrc_str
+        return lrc
 
-    def get_lrc(self, search_term: str) -> Optional[str]:
+    def get_lrc(self, search_term: str) -> Optional[Lyrics]:
         r = self._get(
             "track.search",
             [
@@ -120,12 +128,13 @@ class Musixmatch(LRCProvider):
             return None
         body = r.json()["message"]["body"]
         tracks = body["track_list"]
-        cmp_key = lambda t: f"{t['track']['track_name']} {t['track']['artist_name']}"
+        def cmp_key(t): return f"{t['track']['track_name']} {t['track']['artist_name']}"
         track = get_best_match(tracks, search_term, cmp_key)
         if not track:
             return None
         track_id = track["track"]["track_id"]
         if self.enhanced:
-            return self.get_lrc_word_by_word(track_id) or self.get_lrc_by_id(track_id)
-        else:
-            return self.get_lrc_by_id(track_id)
+            lrc = self.get_lrc_word_by_word(track_id)
+            if lrc and lrc.synced:
+                return lrc
+        return self.get_lrc_by_id(track_id)

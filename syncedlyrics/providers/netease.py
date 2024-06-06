@@ -2,7 +2,7 @@
 
 from typing import Optional
 from .base import LRCProvider
-from ..utils import get_best_match
+from ..utils import Lyrics, get_best_match
 
 
 class NetEase(LRCProvider):
@@ -24,22 +24,23 @@ class NetEase(LRCProvider):
         results = response.json().get("result", {}).get("songs")
         if not results:
             return None
-        cmp_key = lambda t: f"{t.get('name')} {t.get('artists')[0].get('name')}"
+
+        def cmp_key(t): return f"{t.get('name')} {
+            t.get('artists')[0].get('name')}"
         track = get_best_match(results, search_term, cmp_key)
         # Update the session cookies from the new sent cookies for the next request.
         self.session.cookies.update(response.cookies)
         self.session.headers.update({"referer": response.url})
         return track
 
-    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+    def get_lrc_by_id(self, track_id: str) -> Optional[Lyrics]:
         params = {"id": track_id, "lv": 1}
         response = self.session.get(self.API_ENDPOINT_LYRICS, params=params)
-        lrc = response.json().get("lrc", {}).get("lyric")
-        if not lrc:
-            return None
+        lrc = Lyrics()
+        lrc.add_unknown(response.json().get("lrc", {}).get("lyric"))
         return lrc
 
-    def get_lrc(self, search_term: str) -> Optional[str]:
+    def get_lrc(self, search_term: str) -> Optional[Lyrics]:
         track = self.search_track(search_term)
         if not track:
             return None

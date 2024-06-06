@@ -13,6 +13,11 @@ pip install syncedlyrics
 syncedlyrics "SEARCH_TERM"
 ```
 
+
+By default, this will prefer time synced lyrics, but use plaintext lyrics, if no synced lyrics are available.
+To only allow one type of lyrics specify `--plaintext-only` or `--synced-only` respectively
+
+
 #### Available Options
 | Flag | Description |
 | --- | --- |
@@ -20,8 +25,9 @@ syncedlyrics "SEARCH_TERM"
 | `-p` | Space-separated list of [providers](#providers) to include in searching |
 | `-l` | Language code of the translation ([ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) format) |
 | `-v` | Use this flag to show the logs |
-| `--allow-plain` | Return a plain text (not synced) lyrics if no LRC format was found |
-| `--enhanced` | Return an [Enhanced](https://en.wikipedia.org/wiki/LRC_(file_format)#A2_extension:_word_time_tag) (word-level karaoke) format
+| `--allow-plain`, `--plaintext-only` | Return plain text (not synced) lyrics |
+| `--synced-only` | Only look for synced lyrics
+| `--enhanced` | Searches for an [Enhanced](https://en.wikipedia.org/wiki/LRC_(file_format)#A2_extension:_word_time_tag) (word-level karaoke) format. If it isn't available, search for regular synced lyrics.
 
 ### Python
 ```py

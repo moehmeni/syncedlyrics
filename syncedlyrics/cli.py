@@ -30,8 +30,14 @@ def cli_handler():
         "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     parser.add_argument(
-        "--allow-plain",
-        help="Return a plain text (not synced) lyrics if not LRC was found",
+        # Keeping --allow-plain for backwards compatibility, although --plaintext-only is more descriptive
+        "--allow-plain", "--plaintext-only",
+        help="Return plain text (not synced) lyrics",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--synced-only",
+        help="Only look for synced lyrics",
         action="store_true",
     )
     parser.add_argument(
@@ -42,9 +48,11 @@ def cli_handler():
     args = parser.parse_args()
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
+
     lrc = search(
         args.search_term,
         args.allow_plain,
+        args.synced_only,
         args.output,
         args.p,
         lang=args.lang,

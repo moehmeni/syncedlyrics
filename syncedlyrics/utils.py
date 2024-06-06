@@ -1,39 +1,86 @@
 """Utility functions for `syncedlyrics` package"""
 
+from dataclasses import dataclass
 from bs4 import BeautifulSoup, FeatureNotFound
 import rapidfuzz
 from typing import Union, Callable, Optional
 import datetime
+from enum import Enum, auto
 import re
 
 R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
 
-def is_lrc_valid(
-    lrc: str, allow_plain_format: bool = False, check_translation: bool = False
-) -> bool:
-    """Checks whether a given LRC string is valid or not."""
+class TargetType(Enum):
+    PLAINTEXT = auto(),
+    PREFER_SYNCED = auto(),
+    SYNCED_ONLY = auto(),
+
+
+@dataclass
+class Lyrics:
+    synced: Optional[str] = None
+    unsynced: Optional[str] = None
+
+    def add_unknown(self, unknown: str):
+        type = identify_lyrics_type(unknown)
+        if type == "synced":
+            self.synced = unknown
+        elif type == "plaintext":
+            self.unsynced = unknown
+
+    def update(self, other: Optional['Lyrics']):
+        if not other:
+            return
+        if other.synced:
+            self.synced = other.synced
+        if other.unsynced:
+            self.unsynced = other.unsynced
+
+    def is_preferred(self, target_type: TargetType) -> bool:
+        return bool(self.synced or (target_type == TargetType.PLAINTEXT and self.unsynced))
+
+    def is_acceptable(self, target_type: TargetType) -> bool:
+        return bool(self.synced or (target_type != TargetType.SYNCED_ONLY and self.unsynced))
+
+    def to_str(self, target_type: TargetType) -> str:
+        if target_type == TargetType.PLAINTEXT:
+            return self.unsynced or synced_to_plaintext(self.synced)
+        elif target_type == TargetType.PREFER_SYNCED:
+            return self.synced or self.unsynced
+        return self.synced
+
+    def save_lrc_file(self, path: str, target_type: TargetType):
+        """Saves the `.lrc` file"""
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(self.to_str(target_type))
+
+
+def synced_to_plaintext(synced_lyrics: str) -> str:
+    return re.sub(r'\[\d+:\d+\.\d+\] ', '', synced_lyrics)
+
+
+def identify_lyrics_type(lrc: str) -> str:
+    """Identifies the type of the LRC string"""
     if not lrc:
-        return False
+        return "invalid"
     lines = lrc.split("\n")[5:10]
-    if not allow_plain_format:
-        if not check_translation:
-            conds = ["[" in l for l in lrc.split("\n")[5:10]]
-            return all(conds)
-        else:
-            for i, line in enumerate(lines):
-                if "[" in line:
-                    if i + 1 < len(lines):
-                        next_line = lines[i + 1]
-                        if "(" not in next_line:
-                            return False
-    return True
+    if all("[" in l for l in lines):
+        return "synced"
+    return "plaintext"
 
+# Currently not used, since I decided to instead throw an exception if the response contains no translation
 
-def save_lrc_file(path: str, lrc_text: str):
-    """Saves the `.lrc` file"""
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(lrc_text)
+# def has_translation(lrc: str) -> bool:
+#     """Checks whether the LRC string has a translation or not"""
+#     lines = lrc.split("\n")[5:10]
+#     for i, line in enumerate(lines):
+#         if "[" in line:
+#             if i + 1 < len(lines):
+#                 next_line = lines[i + 1]
+#                 if "(" not in next_line:
+#                     return False
+#     return True
 
 
 def generate_bs4_soup(session, url: str, **kwargs):
@@ -86,8 +133,9 @@ def sort_results(
     function that takes a track and returns a string.
     """
     if isinstance(compare_key, str):
-        compare_key = lambda t: t[compare_key]
-    sort_key = lambda t: str_score(compare_key(t), search_term)
+        def compare_key(t): return t[compare_key]
+
+    def sort_key(t): return str_score(compare_key(t), search_term)
     return sorted(results, key=sort_key, reverse=True)
 
 

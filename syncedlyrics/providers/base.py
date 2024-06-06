@@ -2,11 +2,14 @@ import requests
 from typing import Optional
 import logging
 
+from ..utils import Lyrics
+
 
 class TimeoutSession(requests.Session):
     def request(self, method, url, **kwargs):
-        kwargs.setdefault("timeout", (2,5))
+        kwargs.setdefault("timeout", (2, 5))
         return super().request(method, url, **kwargs)
+
 
 class LRCProvider:
     """
@@ -23,7 +26,10 @@ class LRCProvider:
         self.logger = logging.getLogger(self.__class__.__name__)
         self.logger.addHandler(handler)
 
-    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+    def __str__(self) -> str:
+        return self.__class__.__name__
+
+    def get_lrc_by_id(self, track_id: str) -> Optional[Lyrics]:
         """
         Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
 
@@ -32,7 +38,7 @@ class LRCProvider:
         """
         raise NotImplementedError
 
-    def get_lrc(self, search_term: str) -> Optional[str]:
+    def get_lrc(self, search_term: str) -> Optional[Lyrics]:
         """
         Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
         """

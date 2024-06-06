@@ -2,7 +2,7 @@
 
 from typing import Optional
 from .base import LRCProvider
-from ..utils import sort_results
+from ..utils import Lyrics, sort_results
 
 
 class Lrclib(LRCProvider):
@@ -16,15 +16,18 @@ class Lrclib(LRCProvider):
     def __init__(self) -> None:
         super().__init__()
 
-    def get_lrc_by_id(self, track_id: str) -> Optional[str]:
+    def get_lrc_by_id(self, track_id: str) -> Optional[Lyrics]:
         url = self.LRC_ENDPOINT + track_id
         r = self.session.get(url)
         if not r.ok:
             return None
         track = r.json()
-        return track.get("syncedLyrics", track.get("plainLyrics"))
+        lrc = Lyrics()
+        lrc.synced = track.get("syncedLyrics")
+        lrc.unsynced = track.get("plainLyrics")
+        return lrc
 
-    def get_lrc(self, search_term: str) -> Optional[str]:
+    def get_lrc(self, search_term: str) -> Optional[Lyrics]:
         url = self.SEARCH_ENDPOINT
         r = self.session.get(url, params={"q": search_term})
         if not r.ok:
