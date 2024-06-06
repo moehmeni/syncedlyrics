@@ -29,7 +29,7 @@ def test_musixmatch():
 def test_musixmatch_translation():
     lrc = _test_provider("Musixmatch", lang="es")
     # not only testing there is a result, but the translation is also included
-    assert syncedlyrics.is_lrc_valid(lrc, check_translation=True)
+    assert syncedlyrics.utils.has_translation(lrc)
 
 
 def test_musixmatch_enhanced():

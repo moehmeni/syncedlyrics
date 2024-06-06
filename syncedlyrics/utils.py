@@ -69,18 +69,17 @@ def identify_lyrics_type(lrc: str) -> str:
         return "synced"
     return "plaintext"
 
-# Currently not used, since I decided to instead throw an exception if the response contains no translation
 
-# def has_translation(lrc: str) -> bool:
-#     """Checks whether the LRC string has a translation or not"""
-#     lines = lrc.split("\n")[5:10]
-#     for i, line in enumerate(lines):
-#         if "[" in line:
-#             if i + 1 < len(lines):
-#                 next_line = lines[i + 1]
-#                 if "(" not in next_line:
-#                     return False
-#     return True
+def has_translation(lrc: str) -> bool:
+    """Checks whether the LRC string has a translation or not"""
+    lines = lrc.split("\n")[5:10]
+    for i, line in enumerate(lines):
+        if "[" in line:
+            if i + 1 < len(lines):
+                next_line = lines[i + 1]
+                if "(" not in next_line:
+                    return False
+    return True
 
 
 def generate_bs4_soup(session, url: str, **kwargs):
