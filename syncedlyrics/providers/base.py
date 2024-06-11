@@ -7,7 +7,7 @@ from ..utils import Lyrics
 
 class TimeoutSession(requests.Session):
     def request(self, method, url, **kwargs):
-        kwargs.setdefault("timeout", (2, 5))
+        kwargs.setdefault("timeout", (2, 10))
         return super().request(method, url, **kwargs)
 
 
