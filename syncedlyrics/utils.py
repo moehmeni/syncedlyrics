@@ -12,9 +12,9 @@ R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
 
 class TargetType(Enum):
-    PLAINTEXT = auto(),
-    PREFER_SYNCED = auto(),
-    SYNCED_ONLY = auto(),
+    PLAINTEXT = auto()
+    PREFER_SYNCED = auto()
+    SYNCED_ONLY = auto()
 
 
 @dataclass
@@ -29,7 +29,7 @@ class Lyrics:
         elif type == "plaintext":
             self.unsynced = unknown
 
-    def update(self, other: Optional['Lyrics']):
+    def update(self, other: Optional["Lyrics"]):
         if not other:
             return
         if other.synced:
@@ -38,10 +38,14 @@ class Lyrics:
             self.unsynced = other.unsynced
 
     def is_preferred(self, target_type: TargetType) -> bool:
-        return bool(self.synced or (target_type == TargetType.PLAINTEXT and self.unsynced))
+        return bool(
+            self.synced or (target_type == TargetType.PLAINTEXT and self.unsynced)
+        )
 
     def is_acceptable(self, target_type: TargetType) -> bool:
-        return bool(self.synced or (target_type != TargetType.SYNCED_ONLY and self.unsynced))
+        return bool(
+            self.synced or (target_type != TargetType.SYNCED_ONLY and self.unsynced)
+        )
 
     def to_str(self, target_type: TargetType) -> str:
         if target_type == TargetType.PLAINTEXT:
@@ -57,7 +61,7 @@ class Lyrics:
 
 
 def synced_to_plaintext(synced_lyrics: str) -> str:
-    return re.sub(r'\[\d+:\d+\.\d+\] ', '', synced_lyrics)
+    return re.sub(r"\[\d+:\d+\.\d+\] ", "", synced_lyrics)
 
 
 def identify_lyrics_type(lrc: str) -> str:
@@ -132,9 +136,13 @@ def sort_results(
     function that takes a track and returns a string.
     """
     if isinstance(compare_key, str):
-        def compare_key(t): return t[compare_key]
 
-    def sort_key(t): return str_score(compare_key(t), search_term)
+        def compare_key(t):
+            return t[compare_key]
+
+    def sort_key(t):
+        return str_score(compare_key(t), search_term)
+
     return sorted(results, key=sort_key, reverse=True)
 
 

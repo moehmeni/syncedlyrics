@@ -127,7 +127,7 @@ class Musixmatch(LRCProvider):
             return None
         body = r.json()["message"]["body"]
         tracks = body["track_list"]
-        def cmp_key(t): return f"{t['track']['track_name']} {t['track']['artist_name']}"
+        cmp_key = lambda t: f"{t['track']['track_name']} {t['track']['artist_name']}"
         track = get_best_match(tracks, search_term, cmp_key)
         if not track:
             return None

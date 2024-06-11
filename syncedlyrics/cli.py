@@ -31,7 +31,8 @@ def cli_handler():
     )
     parser.add_argument(
         # Keeping --allow-plain for backwards compatibility, although --plaintext-only is more descriptive
-        "--allow-plain", "--plaintext-only",
+        "--allow-plain",
+        "--plaintext-only",
         help="Return plain text (not synced) lyrics",
         action="store_true",
     )

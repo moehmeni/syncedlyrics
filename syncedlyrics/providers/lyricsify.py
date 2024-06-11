@@ -21,10 +21,10 @@ class Lyricsify(LRCProvider):
 
     def get_lrc(self, search_term: str) -> Optional[Lyrics]:
         url = self.SEARCH_ENDPOINT + search_term.replace(" ", "+")
-        def href_match(h): return h.startswith("/lyric/")
+        href_match = lambda h: h.startswith("/lyric/")
         a_tags_boud = SoupStrainer("a", href=href_match)
         soup = generate_bs4_soup(self.session, url, parse_only=a_tags_boud)
-        def cmp_key(t): return t.get_text().lower().replace("-", "")
+        cmp_key = lambda t: t.get_text().lower().replace("-", "")
         a_tag = get_best_match(soup.find_all("a"), search_term, cmp_key)
         if not a_tag:
             return None

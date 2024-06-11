@@ -61,9 +61,7 @@ def search(
         try:
             lrc.update(provider.get_lrc(search_term))
         except Exception as e:
-            logger.error(
-                f"An error occurred while searching for an LRC on {provider}"
-            )
+            logger.error(f"An error occurred while searching for an LRC on {provider}")
             logger.error(e)
             if lang:
                 logger.error("Aborting, since `lang` is only supported by Musixmatch")
@@ -72,9 +70,13 @@ def search(
             logger.info(f'Lyrics found for "{search_term}" on {provider}')
             break
         elif lrc.is_acceptable(target_type):
-            logger.info(f'Found plaintext lyrics on {provider}, but continuing search for synced lyrics')
+            logger.info(
+                f"Found plaintext lyrics on {provider}, but continuing search for synced lyrics"
+            )
         else:
-            logger.debug(f"No suitable lyrics found on {provider}, continuing search...")
+            logger.debug(
+                f"No suitable lyrics found on {provider}, continuing search..."
+            )
     if not lrc.is_acceptable(target_type):
         logger.info(f'No suitable lyrics found for "{search_term}" :(')
         return None
@@ -84,7 +86,9 @@ def search(
     return lrc.to_str(target_type)
 
 
-def _select_providers(providers: List[LRCProvider], string_list: List[str]) -> List[LRCProvider]:
+def _select_providers(
+    providers: List[LRCProvider], string_list: List[str]
+) -> List[LRCProvider]:
     """
     Returns a list of provider classes based on the given string list.
     """
@@ -94,7 +98,9 @@ def _select_providers(providers: List[LRCProvider], string_list: List[str]) -> L
         if string_list:
             # List of providers specified but not found.
             # Deliberately returning nothing instead of all to avoid unexpected behaviour.
-            logger.error(f"Providers {string_list} not found in the list of available providers.")
+            logger.error(
+                f"Providers {string_list} not found in the list of available providers."
+            )
             return []
         else:
             # No providers specified, using all
