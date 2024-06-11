@@ -46,7 +46,7 @@ syncedlyrics.search("...", enhanced=True)
 
 ## Providers
 - [Musixmatch](https://www.musixmatch.com/)
-- [Deezer](https://deezer.com/)
+- ~~[Deezer](https://deezer.com/)~~ (Currently not working anymore)
 - [Lrclib](https://github.com/tranxuanthang/lrcget/issues/2#issuecomment-1326925928)
 - [NetEase](https://music.163.com/)
 - [Megalobiz](https://www.megalobiz.com/)

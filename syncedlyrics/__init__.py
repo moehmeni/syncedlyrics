@@ -50,7 +50,7 @@ def search(
     _providers = [
         Musixmatch(lang=lang, enhanced=enhanced),
         Lrclib(),
-        Deezer(),
+        # Deezer(),
         NetEase(),
         Megalobiz(),
         Genius(),
