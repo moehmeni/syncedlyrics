@@ -66,7 +66,6 @@ class Musixmatch(LRCProvider):
             "track.subtitle.get",
             [("track_id", track_id), ("subtitle_format", "lrc")],
         )
-        print(self.lang)
         if self.lang is not None:
             r_tr = self._get(
                 "crowd.track.translations.get",
