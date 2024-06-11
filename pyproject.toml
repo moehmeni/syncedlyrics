@@ -23,8 +23,8 @@ rapidfuzz = "^3.6.2"
 syncedlyrics = "syncedlyrics.cli:cli_handler"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.2.0"
 pytest = "^8.0.2"
+black = "^24.4.2"
 
 [build-system]
 requires = ["poetry-core"]
