@@ -30,10 +30,8 @@ def cli_handler():
         "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     parser.add_argument(
-        # Keeping --allow-plain for backwards compatibility, although --plaintext-only is more descriptive
-        "--allow-plain",
         "--plaintext-only",
-        help="Return plain text (not synced) lyrics",
+        help="Only look for plain text (not synced) lyrics",
         action="store_true",
     )
     parser.add_argument(
@@ -52,7 +50,7 @@ def cli_handler():
 
     lrc = search(
         args.search_term,
-        args.allow_plain,
+        args.plaintext_only,
         args.synced_only,
         args.output,
         args.p,
