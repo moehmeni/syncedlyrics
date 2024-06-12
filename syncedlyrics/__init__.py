@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 def search(
     search_term: str,
-    allow_plain_format: bool = False,
+    plain_only: bool = False,
     synced_only: bool = False,
     save_path: Optional[str] = None,
     providers: List[str] = [],
@@ -30,18 +30,21 @@ def search(
     Returns the synced lyrics of the song in [LRC](https://en.wikipedia.org/wiki/LRC_(file_format)) format if found.
     ### Arguments
     - `search_term`: The search term to find the track
-    - `allow_plain`: Return plain text (not synced) lyrics
+    - `plain_only`: Only look for plain text (not synced) lyrics
     - `synced_only`: Only look for synced lyrics
     - `save_path`: Path to save `.lrc` lyrics. No saving if `None`
     - `providers`: A list of provider names to include in searching; loops over all the providers as soon as an LRC is found
     - `lang`: Language of the translation along with the lyrics. **Only supported by Musixmatch**
     - `enhanced`: Returns word by word synced lyrics if available. **Only supported by Musixmatch**
     """
-    if allow_plain_format and synced_only:
-        logger.error("--allow-plain and --synced-only flags cannot be used together.")
+    if plain_only and synced_only:
+        logger.error(
+            "--plaintext-only and --synced-only flags cannot be used together."
+        )
         return None
+
     target_type = TargetType.PREFER_SYNCED
-    if allow_plain_format:
+    if plain_only:
         target_type = TargetType.PLAINTEXT
     elif synced_only:
         target_type = TargetType.SYNCED_ONLY
@@ -65,6 +68,7 @@ def search(
             logger.error(e)
             if lang:
                 logger.error("Aborting, since `lang` is only supported by Musixmatch")
+                return None
             continue
         if lrc.is_preferred(target_type):
             logger.info(f'Lyrics found for "{search_term}" on {provider}')
