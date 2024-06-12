@@ -10,9 +10,7 @@ q = os.getenv("TEST_Q", "bad guy billie eilish")
 
 
 def _test_provider(provider: str, **kwargs):
-    lrc = syncedlyrics.search(
-        search_term=q, allow_plain_format=True, providers=[provider], **kwargs
-    )
+    lrc = syncedlyrics.search(search_term=q, providers=[provider], **kwargs)
     logging.debug(lrc)
     assert isinstance(lrc, str)
     return lrc
@@ -39,6 +37,21 @@ def test_musixmatch_enhanced():
 def test_lrclib():
     _test_provider("Lrclib")
 
+
+def test_genius():
+    _test_provider("Genius")
+
+
+def test_plaintext_only():
+    lrc = _test_provider("Lrclib", plain_only=True)
+    assert syncedlyrics.utils.identify_lyrics_type(lrc) == "plaintext"
+
+
+def test_synced_only():
+    lrc = _test_provider("Lrclib", synced_only=True)
+    assert syncedlyrics.utils.identify_lyrics_type(lrc) == "synced"
+
+
 # Not working (at least temporarily)
 # def test_deezer():
 #     _test_provider("Deezer")
@@ -47,7 +60,3 @@ def test_lrclib():
 # Fails randomly on CI
 # def test_megalobiz():
 #     _test_provider("Megalobiz")
-
-# TODO: fix
-# def test_genius():
-#     _test_provider("Genius")
