@@ -30,7 +30,7 @@ def cli_handler():
         "-v", "--verbose", help="Use this flag to show the logs", action="store_true"
     )
     parser.add_argument(
-        "--plaintext-only",
+        "--plain-only",
         help="Only look for plain text (not synced) lyrics",
         action="store_true",
     )
@@ -50,7 +50,7 @@ def cli_handler():
 
     lrc = search(
         args.search_term,
-        args.plaintext_only,
+        args.plain_only,
         args.synced_only,
         args.output,
         args.p,
