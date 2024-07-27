@@ -5,7 +5,7 @@ import time
 import json
 import os
 from .base import LRCProvider
-from ..utils import Lyrics, get_best_match, format_time
+from ..utils import Lyrics, get_best_match, format_time, get_cache_path
 
 # Inspired from https://github.com/Marekkon5/onetagger/blob/0654131188c4df2b4b171ded7cdb927a4369746e/crates/onetagger-platforms/src/musixmatch.rs
 # Huge part converted from Rust to Py by ChatGPT :)
@@ -36,10 +36,9 @@ class Musixmatch(LRCProvider):
         return response
 
     def _get_token(self):
-        # Check if token is cached and not expired
-        token_path = os.path.join(".syncedlyrics", "musixmatch_token.json")
+        token_path = get_cache_path("syncedlyrics", False) / "musixmatch_token.json"
         current_time = int(time.time())
-        if os.path.exists(token_path):
+        if token_path.exists():
             with open(token_path, "r") as token_file:
                 cached_token_data = json.load(token_file)
             cached_token = cached_token_data.get("token")
@@ -57,7 +56,7 @@ class Musixmatch(LRCProvider):
         # Cache the new token
         self.token = new_token
         token_data = {"token": new_token, "expiration_time": expiration_time}
-        os.makedirs(".syncedlyrics", exist_ok=True)
+        token_path.parent.mkdir(parents=True, exist_ok=True)
         with open(token_path, "w") as token_file:
             json.dump(token_data, token_file)
 
