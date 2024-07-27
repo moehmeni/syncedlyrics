@@ -7,6 +7,8 @@ from typing import Union, Callable, Optional
 import datetime
 from enum import Enum, auto
 import re
+import os
+from pathlib import Path
 
 R_FEAT = re.compile(r"\((feat.+)\)", re.IGNORECASE)
 
@@ -58,6 +60,23 @@ class Lyrics:
         """Saves the `.lrc` file"""
         with open(path, "w", encoding="utf-8") as f:
             f.write(self.to_str(target_type))
+
+
+def get_cache_path(lib_name: str = "syncedlyrics", auto_create: bool = True) -> Path:
+    """Get or create a cache directory for the given library name."""
+    if os.name == "nt":  # Windows
+        base_dir = os.getenv("LOCALAPPDATA", os.path.expanduser("~"))
+    elif os.name == "posix":
+        if "Darwin" in os.uname().sysname:  # macOS
+            base_dir = os.path.expanduser("~/Library/Caches")
+        else:  # Linux
+            base_dir = os.path.expanduser("~/.cache")
+    else:
+        base_dir = os.path.expanduser("~")
+    target_dir = Path(base_dir) / lib_name
+    if auto_create:
+        target_dir.mkdir(parents=True, exist_ok=True)
+    return target_dir
 
 
 def synced_to_plaintext(synced_lyrics: str) -> str:
