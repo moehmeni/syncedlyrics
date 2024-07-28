@@ -125,6 +125,8 @@ class Musixmatch(LRCProvider):
             self.logger.warning(f"Got status code {status_code} for {search_term}")
             return None
         body = r.json()["message"]["body"]
+        if not isinstance(body, dict):
+            return None
         tracks = body["track_list"]
         cmp_key = lambda t: f"{t['track']['track_name']} {t['track']['artist_name']}"
         track = get_best_match(tracks, search_term, cmp_key)
