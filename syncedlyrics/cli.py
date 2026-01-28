@@ -15,9 +15,9 @@ def cli_handler():
     parser.add_argument(
         "-p",
         help="Providers to include in the searching (separated by space). Default: all providers",
-        default="",
+        default=None,
         choices=["musixmatch", "lrclib", "netease", "megalobiz", "genius"],
-        nargs="+",
+        nargs="*",
         type=str.lower,
     )
     parser.add_argument(
@@ -53,7 +53,7 @@ def cli_handler():
         args.plain_only,
         args.synced_only,
         args.output,
-        args.p,
+        args.p or [],
         lang=args.lang,
         enhanced=args.enhanced,
     )
