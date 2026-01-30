@@ -26,6 +26,11 @@ syncedlyrics = "syncedlyrics.cli:cli_handler"
 pytest = "^8.0.2"
 black = "^24.4.2"
 
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests that hit live provider APIs",
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
