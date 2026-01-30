@@ -24,7 +24,10 @@ class LRCProvider:
         handler = logging.StreamHandler()
         handler.setFormatter(formatter)
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.logger.addHandler(handler)
+        # Avoid duplicate handlers when providers are instantiated multiple times
+        if not self.logger.handlers:
+            self.logger.addHandler(handler)
+        self.logger.propagate = False
 
     def __str__(self) -> str:
         return self.__class__.__name__

@@ -87,22 +87,28 @@ def identify_lyrics_type(lrc: str) -> str:
     """Identifies the type of the LRC string"""
     if not lrc:
         return "invalid"
-    lines = lrc.split("\n")[5:10]
-    if all("[" in l for l in lines):
+    lines = [ln.strip() for ln in lrc.splitlines() if ln.strip()]
+    timestamp = re.compile(r"\[\d{1,2}:\d{2}(?:\.\d{1,3})?\]")
+    synced_lines = sum(1 for line in lines if timestamp.search(line))
+    if synced_lines >= max(1, len(lines) // 4) or synced_lines >= 3:
         return "synced"
     return "plaintext"
 
 
 def has_translation(lrc: str) -> bool:
     """Checks whether the LRC string has a translation or not"""
-    lines = lrc.split("\n")[5:10]
-    for i, line in enumerate(lines):
-        if "[" in line:
-            if i + 1 < len(lines):
-                next_line = lines[i + 1]
-                if "(" not in next_line:
-                    return False
-    return True
+    if not lrc:
+        return False
+    lines = [ln.strip() for ln in lrc.splitlines() if ln.strip()]
+    timestamp = re.compile(r"\[\d{1,2}:\d{2}(?:\.\d{1,3})?\]")
+    for i, line in enumerate(lines[:-1]):
+        if timestamp.search(line):
+            next_line = lines[i + 1]
+            if timestamp.search(next_line):
+                continue
+            if next_line.startswith("(") and next_line.endswith(")"):
+                return True
+    return False
 
 
 def generate_bs4_soup(session, url: str, **kwargs):

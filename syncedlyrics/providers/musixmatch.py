@@ -47,18 +47,32 @@ class Musixmatch(LRCProvider):
                 self.token = cached_token
                 return
         # Token not cached or expired, fetch a new token
-        d = self._get("token.get", [("user_language", "en")]).json()
-        if d["message"]["header"]["status_code"] == 401:
-            time.sleep(10)
-            return self._get_token()
-        new_token = d["message"]["body"]["user_token"]
-        expiration_time = current_time + 600  # 10 minutes expiration
-        # Cache the new token
-        self.token = new_token
-        token_data = {"token": new_token, "expiration_time": expiration_time}
-        token_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(token_path, "w") as token_file:
-            json.dump(token_data, token_file)
+        max_retries = 8
+        delay = 2
+        for attempt in range(1, max_retries + 1):
+            d = self._get("token.get", [("user_language", "en")]).json()
+            status_code = d["message"]["header"].get("status_code")
+            if status_code == 200:
+                new_token = d["message"]["body"]["user_token"]
+                expiration_time = current_time + 600  # 10 minutes expiration
+                # Cache the new token
+                self.token = new_token
+                token_data = {"token": new_token, "expiration_time": expiration_time}
+                token_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(token_path, "w") as token_file:
+                    json.dump(token_data, token_file)
+                return
+            if status_code == 401:
+                # Token endpoint occasionally returns 401; retry with backoff
+                time.sleep(delay)
+                delay = min(delay * 2, 60)
+                continue
+            # Other errors: brief backoff then retry
+            time.sleep(delay)
+            delay = min(delay * 2, 60)
+        # Exhausted retries
+        self.logger.error("Failed to obtain Musixmatch token after retries")
+        self.token = None
 
     def get_lrc_by_id(self, track_id: str) -> Optional[Lyrics]:
         r = self._get(
@@ -81,9 +95,12 @@ class Musixmatch(LRCProvider):
         if not r.ok:
             return None
         body = r.json()["message"]["body"]
-        if not body:
+        if not body or not body.get("subtitle"):
             return None
-        lrc_str = body["subtitle"]["subtitle_body"]
+        subtitle = body.get("subtitle", {})
+        lrc_str = subtitle.get("subtitle_body")
+        if not lrc_str:
+            return None
         if self.lang is not None:
             for i in body_tr["translations_list"]:
                 org, tr = (
