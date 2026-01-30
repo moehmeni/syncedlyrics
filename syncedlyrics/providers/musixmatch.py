@@ -47,24 +47,29 @@ class Musixmatch(LRCProvider):
                 self.token = cached_token
                 return
         # Token not cached or expired, fetch a new token
-        max_retries = 3
-        delay = 5
-        for _ in range(max_retries):
+        max_retries = 8
+        delay = 2
+        for attempt in range(1, max_retries + 1):
             d = self._get("token.get", [("user_language", "en")]).json()
             status_code = d["message"]["header"].get("status_code")
+            if status_code == 200:
+                new_token = d["message"]["body"]["user_token"]
+                expiration_time = current_time + 600  # 10 minutes expiration
+                # Cache the new token
+                self.token = new_token
+                token_data = {"token": new_token, "expiration_time": expiration_time}
+                token_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(token_path, "w") as token_file:
+                    json.dump(token_data, token_file)
+                return
             if status_code == 401:
+                # Token endpoint occasionally returns 401; retry with backoff
                 time.sleep(delay)
-                delay *= 2
+                delay = min(delay * 2, 60)
                 continue
-            new_token = d["message"]["body"]["user_token"]
-            expiration_time = current_time + 600  # 10 minutes expiration
-            # Cache the new token
-            self.token = new_token
-            token_data = {"token": new_token, "expiration_time": expiration_time}
-            token_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(token_path, "w") as token_file:
-                json.dump(token_data, token_file)
-            return
+            # Other errors: brief backoff then retry
+            time.sleep(delay)
+            delay = min(delay * 2, 60)
         # Exhausted retries
         self.logger.error("Failed to obtain Musixmatch token after retries")
         self.token = None
