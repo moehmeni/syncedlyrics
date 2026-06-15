@@ -81,7 +81,13 @@ def get_cache_path(lib_name: str = "syncedlyrics", auto_create: bool = True) -> 
 
 def synced_to_plaintext(synced_lyrics: str) -> str:
     return re.sub(r"\[\d+:\d+\.\d+\] ", "", synced_lyrics)
-
+    
+def get_search_term(search_term: str) -> str:
+     match = re.search(r"^.*[\\|\/][\d+\.]*(.+)\.[flac|mp3|wav|aax]", search_term)
+    if match:
+        return match.group(1)
+    else:
+        return search_term
 
 def identify_lyrics_type(lrc: str) -> str:
     """Identifies the type of the LRC string"""

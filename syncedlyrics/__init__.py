@@ -42,6 +42,8 @@ def search(
             "--plaintext-only and --synced-only flags cannot be used together."
         )
         return None
+        
+    new_search_term = get_search_term(search_term)
 
     target_type = TargetType.PREFER_SYNCED
     if plain_only:
@@ -62,7 +64,7 @@ def search(
     for provider in _select_providers(_providers, providers):
         logger.debug(f"Looking for an LRC on {provider}")
         try:
-            lrc.update(provider.get_lrc(search_term))
+            lrc.update(provider.get_lrc(new_search_term))
         except Exception as e:
             logger.error(f"An error occurred while searching for an LRC on {provider}")
             logger.error(e)
@@ -71,7 +73,7 @@ def search(
                 return None
             continue
         if lrc.is_preferred(target_type):
-            logger.info(f'Lyrics found for "{search_term}" on {provider}')
+            logger.info(f'Lyrics found for "{new_search_term}" on {provider}')
             break
         elif lrc.is_acceptable(target_type):
             logger.info(
@@ -82,7 +84,7 @@ def search(
                 f"No suitable lyrics found on {provider}, continuing search..."
             )
     if not lrc.is_acceptable(target_type):
-        logger.info(f'No suitable lyrics found for "{search_term}" :(')
+        logger.info(f'No suitable lyrics found for "{new_search_term}" :(')
         return None
     if save_path:
         save_path = save_path.format(search_term=search_term)
